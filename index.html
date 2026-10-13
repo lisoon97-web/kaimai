@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>开麦华文播客</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Noto+Sans+SC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+/* Layout: on wide screens a booth guide on the left and a phone (student) or wide panel (teacher) on the right; on phones the app fills the screen. */
+:root{
+  --paper:#EEF1F8; --card:#FFFFFF; --sunk:#E4E8F3; --ink:#141A33; --muted:#5B6385; --line:#D6DCEB;
+  --accent:#2F45E0; --accent-soft:#E3E7FF; --onair:#FFC53D; --onair-ink:#3A2A00;
+  --agree:#0B7F70; --agree-soft:#DDF3EF; --differ:#7136C9; --differ-soft:#EEE5FB; --ask:#A35C00; --ask-soft:#FCEED8;
+  --danger:#C2342A; --danger-soft:#FBE3E0; --ok:#1A8657;
+  --shadow:0 18px 50px -20px rgba(20,26,51,.35);
+  --f-display:"ZCOOL QingKe HuangYou","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0C1022; --card:#161B32; --sunk:#1E2442; --ink:#E8EBF8; --muted:#9AA2C6; --line:#2A3154;
+  --accent:#8193FF; --accent-soft:#252E63; --onair:#FFC53D; --onair-ink:#3A2A00;
+  --agree:#4CCDB9; --agree-soft:#123A36; --differ:#B48CF5; --differ-soft:#2D2050; --ask:#F2A94A; --ask-soft:#3E2C12;
+  --danger:#FF7A6E; --danger-soft:#43201D; --ok:#4BC98C; --shadow:0 18px 50px -20px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0C1022; --card:#161B32; --sunk:#1E2442; --ink:#E8EBF8; --muted:#9AA2C6; --line:#2A3154;
+  --accent:#8193FF; --accent-soft:#252E63; --onair:#FFC53D; --onair-ink:#3A2A00;
+  --agree:#4CCDB9; --agree-soft:#123A36; --differ:#B48CF5; --differ-soft:#2D2050; --ask:#F2A94A; --ask-soft:#3E2C12;
+  --danger:#FF7A6E; --danger-soft:#43201D; --ok:#4BC98C; --shadow:0 18px 50px -20px rgba(0,0,0,.7); color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{min-height:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-inline:16px;padding-block:16px;max-width:1240px;margin:0 auto;align-items:start}
+@media (min-width:980px){.shell{grid-template-columns:320px minmax(0,1fr);gap:40px;padding-block:28px}}
+
+/* Guide */
+.guide{display:flex;flex-direction:column;gap:16px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{font-family:var(--f-display);font-size:44px;line-height:1;letter-spacing:.02em}
+.onair{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.14em;background:var(--onair);color:var(--onair-ink);padding:3px 8px;border-radius:4px}
+.tagline{color:var(--muted);margin:0;max-width:30em}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.steps li::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);font-weight:600;font-size:13px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper)}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:14px}
+.note{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px;margin:0}
+details.guide-m{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+details.guide-m summary{font-weight:700;cursor:pointer}
+details.guide-m .steps{margin-top:10px}
+@media (min-width:980px){.guide-m{display:none}}
+@media (max-width:979px){.guide{display:none}}
+
+.stage{display:flex;flex-direction:column;align-items:center;gap:14px;min-width:0}
+.switch{display:inline-flex;background:var(--sunk);border-radius:999px;padding:4px;gap:4px}
+.switch button{border:0;background:transparent;padding:7px 16px;border-radius:999px;font-weight:700;font-size:14px;color:var(--muted)}
+.switch button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.stage-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.sync{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--sunk);color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.sync i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.sync.on{color:var(--ok)}.sync.on i{background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
+.sync.off i{background:var(--ask)}
+.reset{border:1px solid var(--line);background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;color:var(--muted)}
+
+.device{position:relative;width:100%;max-width:400px;height:min(840px,calc(100dvh - 110px));min-height:560px;background:var(--paper);border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+.device.wide{max-width:820px;border-radius:20px}
+@media (max-width:520px){.device{border-radius:20px;height:calc(100dvh - 150px)}}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 18px 24px}
+.appbar{position:sticky;top:0;z-index:5;background:var(--paper);display:flex;align-items:center;gap:10px;padding:16px 0 12px;margin:0}
+.appbar h1{margin:0;font-size:17px;font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.appbar .logo{font-size:30px}
+.classtag{font-size:12px;color:var(--muted);background:var(--sunk);padding:3px 10px;border-radius:999px;white-space:nowrap}
+.iconbtn{border:0;background:var(--sunk);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none}
+.iconbtn svg{width:18px;height:18px}
+
+.nav{display:grid;grid-template-columns:1fr 1fr 72px 1fr 1fr;align-items:end;border-top:1px solid var(--line);background:var(--card);padding:8px 10px 10px}
+.nav button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted);padding:4px}
+.nav button svg{width:22px;height:22px}
+.nav button[aria-current="page"]{color:var(--accent);font-weight:700}
+.nav .micbtn{width:64px;height:64px;margin:-30px auto 0;border-radius:50%;background:var(--accent);color:#fff;box-shadow:0 8px 20px -6px var(--accent);justify-content:center;border:4px solid var(--paper)}
+.nav .micbtn svg{width:26px;height:26px}
+.nav .miclabel{text-align:center;font-size:12px;color:var(--muted);margin-top:2px}
+
+.eyebrow{font-family:var(--f-mono);font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin:18px 0 8px}
+.feature{background:var(--ink);color:var(--paper);border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.feature .onair{align-self:flex-start}
+.feature h2{font-family:var(--f-display);font-weight:400;font-size:32px;line-height:1.15;margin:0;text-wrap:balance}
+.feature p{margin:0;opacity:.8;font-size:14px}
+.feature .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.feature .meta{font-size:13px;opacity:.75}
+.btn{border:0;border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.btn svg{width:16px;height:16px}
+.btn.primary{background:var(--accent);color:#fff}
+.btn.onair-b{background:var(--onair);color:var(--onair-ink)}
+.btn.ghost{background:transparent;border:1px solid currentColor}
+.btn.soft{background:var(--sunk);color:var(--ink)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{padding:6px 12px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.tcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;width:100%;text-align:left}
+.tcard .t{flex:1;min-width:0}
+.tcard b{display:block;font-size:15px}
+.tcard small{color:var(--muted)}
+.tlist{display:grid;gap:10px}
+.archived{opacity:.75}
+
+.avs{display:flex}
+.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;flex:none}
+.avs .av{width:24px;height:24px;font-size:11px;border:2px solid var(--ink);margin-left:-6px}
+.avs .av:first-child{margin-left:0}
+
+/* post */
+.post{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.post.pinned{border-color:var(--onair);box-shadow:inset 0 0 0 1px var(--onair)}
+.phead{display:flex;align-items:center;gap:10px}
+.phead .who{flex:1;min-width:0}
+.phead .who b{display:block;font-size:14px}
+.phead .who small{color:var(--muted);font-size:12px}
+.badge{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.badge.pin{background:var(--onair);color:var(--onair-ink)}
+.player{display:flex;align-items:center;gap:10px;background:var(--sunk);border-radius:14px;padding:8px 12px 8px 8px}
+.play{width:38px;height:38px;border-radius:50%;border:0;background:var(--accent);color:#fff;display:grid;place-items:center;flex:none}
+.play svg{width:16px;height:16px}
+.play .i-pause{display:none}
+.play.on .i-pause{display:block}.play.on .i-play{display:none}
+.wave{flex:1;display:flex;align-items:center;gap:2px;height:30px;min-width:0}
+.wave i{flex:1;background:var(--line);border-radius:2px;min-width:2px}
+.wave i.done{background:var(--accent)}
+.dur{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.excerpt{margin:0;font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pfoot{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted)}
+.linkbtn{border:0;background:none;padding:0;color:var(--accent);font-weight:700;font-size:13px}
+.linkbtn.muted{color:var(--muted);font-weight:500}
+.plist{display:grid;gap:12px}
+.likebtn{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:4px 12px 4px 10px;font-size:13px;font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.likebtn svg{width:16px;height:16px}
+.likebtn[aria-pressed="true"]{border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
+.likebtn[aria-pressed="true"] svg{fill:currentColor}
+.likebtn.pop svg{animation:pop .35s ease}
+@keyframes pop{50%{transform:scale(1.35)}}
+.mylikes{font-size:12px;color:var(--danger);font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.mylikes svg{width:14px;height:14px;fill:currentColor}
+.pfoot .l{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+.transcript{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:0;font-size:15px;line-height:1.85}
+.tag{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.tag.agree{background:var(--agree-soft);color:var(--agree)}
+.tag.differ{background:var(--differ-soft);color:var(--differ)}
+.tag.ask{background:var(--ask-soft);color:var(--ask)}
+.resp{display:grid;grid-template-columns:30px 1fr;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.resp:last-child{border-bottom:0}
+.resp .rb{min-width:0;display:flex;flex-direction:column;gap:6px}
+.resp .rh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
+.resp .rh small{color:var(--muted)}
+.resp p{margin:0;font-size:14px}
+.mini{display:flex;align-items:center;gap:8px;background:var(--sunk);border-radius:999px;padding:4px 12px 4px 4px;align-self:flex-start;max-width:100%}
+.mini .play{width:28px;height:28px}
+.mini .play svg{width:12px;height:12px}
+.mini .wave{width:90px;flex:none;height:20px}
+
+.composer{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.chip[aria-pressed="true"].agree{border-color:var(--agree);background:var(--agree-soft);color:var(--agree)}
+.chip[aria-pressed="true"].differ{border-color:var(--differ);background:var(--differ-soft);color:var(--differ)}
+.chip[aria-pressed="true"].ask{border-color:var(--ask);background:var(--ask-soft);color:var(--ask)}
+.chip[aria-pressed="true"].plain{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.seg{display:inline-flex;background:var(--sunk);border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700;color:var(--muted);display:flex;gap:5px;align-items:center}
+.seg button svg{width:14px;height:14px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink)}
+.login{max-width:340px;margin:40px auto 0;display:flex;flex-direction:column;gap:12px;text-align:center}
+.login .lk{width:56px;height:56px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin:0 auto}
+.login .lk svg{width:26px;height:26px}
+.login h2{margin:0;font-size:20px}
+.login input{text-align:center;font-family:var(--f-mono);font-size:20px;letter-spacing:.3em}
+.err{color:var(--danger);font-size:13px;font-weight:700;margin:0}
+textarea,input[type=text],input[type=date],input[type=password]{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:10px 12px;resize:vertical}
+textarea{min-height:84px;line-height:1.7}
+label.fl{font-size:13px;font-weight:700;display:block;margin-bottom:4px}
+.hint{font-size:12px;color:var(--muted);margin:0}
+
+/* rec */
+.stepper{display:flex;gap:6px;margin:4px 0 6px}
+.stepper span{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.stepper span.on{background:var(--accent)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.panel h3{margin:0;font-size:15px;display:flex;align-items:center;gap:8px}
+.panel h3 svg{width:18px;height:18px;color:var(--accent)}
+.stack{display:flex;flex-direction:column;gap:12px}
+.spark{background:var(--onair);color:var(--onair-ink);border-radius:14px;padding:14px 16px;font-weight:700;font-size:15px;animation:flip .35s ease}
+@keyframes flip{from{transform:rotateX(70deg);opacity:0}to{transform:none;opacity:1}}
+.rescue{display:flex;gap:8px}
+.rescue input{flex:1;min-width:0}
+.rescue-out{font-size:14px}
+.rescue-out b{font-size:20px;font-weight:900}
+.topicpick{display:grid;gap:8px}
+.topicpick button{text-align:left;border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px}
+.topicpick button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+
+.onairbox{background:var(--ink);color:var(--paper);border-radius:26px;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.bigtime{font-family:var(--f-mono);font-size:48px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.bigtime small{font-size:16px;opacity:.6}
+.live{display:flex;gap:4px;align-items:center;height:60px}
+.live i{width:5px;border-radius:3px;background:var(--onair);height:20%;animation:lv 1s ease-in-out infinite}
+.live.idle i{animation:none;opacity:.35}
+.live.real i{animation:none;transition:height .08s linear}
+.livecap{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;font-size:14px;min-height:44px;width:100%;text-align:left;opacity:.9}
+.livecap small{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;opacity:.6}
+.errbox{background:var(--danger-soft);color:var(--ink);border-radius:14px;padding:12px 14px;font-size:14px;display:flex;flex-direction:column;gap:8px;text-align:left}
+.errbox b{color:var(--danger)}
+@keyframes lv{0%,100%{height:15%}50%{height:95%}}
+.recbtn{width:84px;height:84px;border-radius:50%;border:6px solid rgba(255,255,255,.18);background:var(--danger);color:#fff;display:grid;place-items:center}
+.recbtn svg{width:30px;height:30px}
+.recbtn.stop{background:var(--onair);color:var(--onair-ink)}
+.onairbox p{margin:0;opacity:.75;font-size:14px}
+
+.echo{display:grid;gap:10px}
+.fb{border-radius:14px;padding:12px 14px;font-size:14px}
+.fb h4{margin:0 0 4px;font-size:13px}
+.fb ul{margin:0;padding-left:18px}
+.fb.good{background:var(--agree-soft)}.fb.good h4{color:var(--agree)}
+.fb.try{background:var(--ask-soft)}.fb.try h4{color:var(--ask)}
+.fb.words{background:var(--accent-soft)}.fb.words h4{color:var(--accent)}
+.wordrow{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:4px 0}
+.wordrow:last-child{border:0}
+.wordrow span:first-child{font-family:var(--f-mono);font-size:13px}
+.private{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.private svg{width:14px;height:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-family:var(--f-mono);font-size:24px;font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted);font-size:12px}
+.words{display:flex;flex-wrap:wrap;gap:6px}
+.words span{background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:3px 9px;font-size:13px;font-weight:700}
+.empty{text-align:center;color:var(--muted);padding:24px 12px;border:1.5px dashed var(--line);border-radius:16px;font-size:14px}
+
+/* teacher */
+.ttabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 -18px 14px;padding:0 18px;overflow-x:auto}
+.ttabs button{border:0;background:none;padding:10px 12px;font-weight:700;font-size:14px;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;display:flex;gap:6px;align-items:center}
+.ttabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent)}
+.count{background:var(--danger);color:#fff;font-size:11px;border-radius:999px;padding:0 6px;font-family:var(--f-mono)}
+.tgrid{display:grid;gap:16px}
+@media (min-width:760px){.device.wide .tgrid.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.trow{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.trow:last-child{border:0}
+.trow .tx{flex:1;min-width:0}
+.trow .tx b{display:block;font-size:14px}
+.trow .tx small{color:var(--muted);font-size:12px}
+.st{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.st.live{background:var(--agree-soft);color:var(--agree)}
+.st.sched{background:var(--accent-soft);color:var(--accent)}
+.st.arch{background:var(--sunk);color:var(--muted)}
+.radio{display:flex;gap:14px;flex-wrap:wrap;font-size:14px;align-items:center}
+.mod{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.mod.hid{opacity:.6;border-style:dashed}
+.mod .mh{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px}
+.mod .mh b{font-size:14px}
+.mod .mh small{color:var(--muted)}
+.mod p{margin:0;font-size:14px}
+.flag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--danger-soft);color:var(--danger);white-space:nowrap}
+.flag.ai{background:var(--ask-soft);color:var(--ask)}
+.flag.h{background:var(--sunk);color:var(--muted)}
+.confirm{background:var(--danger-soft);border-radius:10px;padding:8px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--danger);font-weight:700}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;color:var(--muted);font-weight:700;background:var(--sunk)}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.quiet{background:var(--ask-soft);color:var(--ask);font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+.sumrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:12px}
+.privnote{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin:8px 0 0}
+.privnote svg{width:14px;height:14px;flex:none}
+
+.nav button{position:relative}
+.livedot{position:absolute;top:2px;right:calc(50% - 16px);width:8px;height:8px;border-radius:50%;background:var(--danger);box-shadow:0 0 0 2px var(--card)}
+.shell.projmode{grid-template-columns:minmax(0,1fr);max-width:none}
+.shell.projmode .guide,.shell.projmode details.guide-m{display:none}
+.device.proj{max-width:1240px;border-radius:16px;height:min(900px,calc(100dvh - 110px))}
+.projwrap{padding:0 28px 28px}
+.projtop{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px 0 4px;position:sticky;top:0;background:var(--paper);z-index:5}
+.projtitle{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4vw,52px);line-height:1.15;margin:6px 0 4px;text-wrap:balance}
+.projq{font-size:20px;margin:6px 0 18px;color:var(--muted);font-weight:700}
+.proj .bartrack{height:42px}.proj .barrow{grid-template-columns:64px 1fr 48px}.proj .barrow .em{font-size:38px}.proj .barrow .n{font-size:24px}
+.proj .track{height:96px}.proj .dot{width:24px;height:24px}.proj .tracklabels{font-size:16px}
+.proj .excard p{font-size:17px}.proj .exseg{font-size:17px}
+.banner{width:100%;text-align:left;border:0;background:var(--onair);color:var(--onair-ink);border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin-bottom:12px;font-weight:700;font-size:13px}
+.banner .t{flex:1;min-width:0}.banner .t b{display:block;font-size:15px}.banner .t small{font-weight:500}
+.feelrow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.feelbtn{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:10px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:700;color:var(--ink)}
+.feelbtn span{font-size:28px;line-height:1.1}
+.feelbtn[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+input[type=range]{width:100%;accent-color:var(--accent);height:34px;margin:4px 0}
+.track{position:relative;height:56px;margin:30px 12px 6px;background:linear-gradient(to right,var(--danger-soft),var(--sunk) 50%,var(--agree-soft));border-radius:999px}
+.dot{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%);background:var(--accent);opacity:.8;border:2px solid var(--card);padding:0}
+button.dot{cursor:pointer}
+.dot.spot,.dot.me{background:var(--onair);opacity:1;z-index:3;width:22px;height:22px}
+.dot.before{background:var(--muted);opacity:.4}
+.spotlab{position:absolute;top:-4px;transform:translate(-50%,-100%);background:var(--ink);color:var(--paper);font-size:12px;padding:2px 8px;border-radius:6px;white-space:nowrap;z-index:4}
+.tracklabels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.bars{display:grid;gap:8px}
+.barrow{display:grid;grid-template-columns:44px 1fr 36px;gap:10px;align-items:center}
+.barrow .em{font-size:24px;text-align:center}
+.bartrack{height:26px;background:var(--sunk);border-radius:8px;overflow:hidden}
+.bar{height:100%;background:var(--accent);border-radius:8px;min-width:3px;transition:width .4s ease}
+.barrow .n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+.barrow .names{grid-column:2/-1;font-size:12px;color:var(--muted);margin-top:-4px}
+.wallgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.wallgrid.big{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.wallcard{border-radius:12px;padding:12px;font-size:14px;box-shadow:0 2px 8px -2px rgba(20,26,51,.18)}
+.wallcard p{margin:0}
+.wallcard.w0{background:var(--onair);color:var(--onair-ink)}
+.wallcard.w1{background:var(--accent-soft);color:var(--ink)}
+.wallcard.w2{background:var(--agree-soft);color:var(--ink)}
+.wallgrid.big .wallcard{font-size:19px;padding:16px}
+.wallcard.hid{opacity:.4;text-decoration:line-through}
+.wallfoot{display:flex;justify-content:space-between;align-items:center;margin-top:6px;gap:6px}
+.exgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+@media (min-width:760px){.device.wide .exgrid,.device.proj .exgrid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.excard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.excard p{margin:0;font-size:14px;line-height:1.85}
+.exhead{display:flex;justify-content:space-between;align-items:center}
+.play.sm{width:32px;height:32px}.play.sm svg{width:13px;height:13px}
+.exseg{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;width:100%;text-align:left;border:0;border-left:4px solid;border-radius:0 12px 12px 0;padding:10px 12px;font-size:14px;line-height:1.8;color:var(--ink)}
+.exseg b{display:block;font-size:12px}
+.exseg.on{outline:2px solid var(--accent);outline-offset:1px}
+.stepchip{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;font-weight:900;font-size:14px;color:var(--card);flex:none}
+.lvlcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lvlcard{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
+.lvlcard b{font-size:15px}.lvlcard small{color:var(--muted);font-size:12px;line-height:1.4}
+.lvlcard[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.rub{display:flex;flex-direction:column}
+.rubrow{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.rubrow:last-child{border:0}
+.rt b{display:block;font-size:14px}.rt small{color:var(--muted);font-size:12px;line-height:1.4;display:block}
+.rpill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.rpills{display:inline-flex;gap:3px;flex-wrap:wrap;vertical-align:middle}
+.rp{width:22px;height:22px;border-radius:6px;display:inline-grid;place-items:center;font-size:12px;font-weight:900}
+.l2{background:var(--agree-soft);color:var(--agree)}.l1{background:var(--ask-soft);color:var(--ask)}.l0{background:var(--danger-soft);color:var(--danger)}.ln{background:var(--sunk);color:var(--muted)}
+.tcard .rpills{margin-top:4px;display:flex}
+.segcard{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center;width:100%;text-align:left;color:var(--ink)}
+.segcard .t{flex:1;min-width:0}.segcard .t b{display:block;font-size:14px}.segcard .t small{color:var(--muted);font-size:12px}
+.segcard.cur{flex-direction:column;align-items:stretch;border-color:var(--accent);gap:10px}
+.segcard.done:not(.cur){background:var(--paper)}
+.scaf{border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.scafh{display:flex;gap:8px;align-items:center}
+.scaf p{margin:0;font-size:14px}
+.starters{display:flex;flex-wrap:wrap;gap:6px}
+.starters span{background:var(--card);border:1px dashed var(--line);border-radius:8px;padding:3px 9px;font-size:13px}
+.scafrow{display:flex;flex-wrap:wrap;gap:6px}
+.scafpill{border:1.5px solid;border-radius:999px;padding:4px 10px;font-size:13px;display:inline-flex;gap:6px;font-weight:700}
+.scafline{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;align-items:start;font-size:13px}
+.scafline b{display:block;font-size:14px}
+.progress{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden;margin-top:4px}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .3s}
+.segline{display:grid;grid-template-columns:26px 32px minmax(0,1fr);gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.segline:last-child{border:0}
+.segtext{font-size:14px}
+.exmp{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.exmp .mh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}.exmp .mh small{color:var(--muted)}
+.cm{background:var(--sunk);border-radius:12px;padding:10px 12px}
+.cm p{margin:0;font-size:14px}.cm small{color:var(--muted);font-size:12px}
+.stagebar{display:flex;gap:6px;flex-wrap:wrap}
+.stagebtn{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:6px 10px;font-size:13px;font-weight:700;display:flex;gap:6px;align-items:center;color:var(--ink)}
+.stagebtn small{font-family:var(--f-mono);color:var(--muted)}
+.stagebtn[aria-current="step"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.stagebtn[aria-current="step"] small{color:#fff}
+.clshead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.clshead h3{margin:0}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+details.panel summary{list-style-position:inside}
+
+.joincard{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:8px 0}
+.joincard .qr{width:116px;flex:none;background:#fff;border-radius:10px;overflow:hidden;line-height:0}
+.joincard .qr svg{width:100%;height:auto;display:block}
+.joincard.big{padding:18px;gap:24px;margin:10px 0 18px}
+.joincard.big .qr{width:min(300px,38vw)}
+.jtx{display:flex;flex-direction:column;gap:4px;min-width:0}
+.jtx b{font-size:16px}.joincard.big .jtx b{font-size:30px}
+.jurl{font-family:var(--f-mono);font-size:13px;word-break:break-all;color:var(--accent)}.joincard.big .jurl{font-size:20px}
+.jtx small{color:var(--muted);font-size:12px;line-height:1.5}.joincard.big .jtx small{font-size:16px}
+.toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap;z-index:20;box-shadow:var(--shadow);max-width:90%;overflow:hidden;text-overflow:ellipsis}
+.device.wide .toast{bottom:20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="shell">
+  <aside class="guide" aria-label="展位体验指引">
+    <div class="brand"><span class="logo">开麦</span><span class="onair">ON AIR</span></div>
+    <p class="tagline">一个让中三学生课后自愿开口说中文的微型播客社群。录一分钟，听同学怎么想，用声音回应。</p>
+    <ol class="steps" id="stepsWide"></ol>
+    <p class="note note-dyn">正在连线……</p>
+  </aside>
+  <main class="stage">
+    <details class="guide-m"><summary>开麦 · 展位体验指引</summary><ol class="steps" id="stepsNarrow"></ol><p class="note note-dyn" style="margin-top:10px">正在连线……</p></details>
+    <div class="stage-top">
+      <div class="switch" role="group" aria-label="切换视角">
+        <button id="vStudent" aria-pressed="true">学生端</button>
+        <button id="vTeacher" aria-pressed="false">老师登入</button>
+      </div>
+      <span class="sync" id="syncChip"><i></i>连线中……</span>
+    </div>
+    <div class="device" id="device"></div>
+  </main>
+</div>
+
+<script>/* qrcode-generator 1.4.4 (MIT, Kazuhiko Arase) */
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,(function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1}))},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(t,r){var e=n("友");if(2!=e.length||38726!=(e[0]<<8|e[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}((function(){return qrcode}));
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+const STEPS = [
+  ['老师按“开始上课”','登入老师后台（密码向组员索取），在“上课”选话题、按开始，再打开投影大屏。'],
+  ['用手机跟着老师走','标第一感觉、拉立场光谱、贴观点墙，再比一比两个示例，找出“立、理、例、驳、结”。'],
+  ['分段练习或完整播客','选容易、普通或挑战，录完马上看 AI 按 rubric 给的反馈。练习只有自己和老师看得到。'],
+  ['课后去开麦','在话题里发布播客、听同学的原声、用三种回应留言。']
+]
+const stepsHTML = STEPS.map(s=>`<li><div><b>${s[0]}</b><span>${s[1]}</span></div></li>`).join('');
+document.getElementById('stepsWide').innerHTML = stepsHTML;
+document.getElementById('stepsNarrow').innerHTML = stepsHTML;
+
+/* ---------- icons ---------- */
+const I = {
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+  play:'<svg class="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  pause:'<svg class="i-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 10l8-6 8 6v9a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.2 5.6L20 11l-5.8 2.4L12 19l-2.2-5.6L4 11l5.8-2.4z"/></svg>',
+  life:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M5.6 5.6l3.6 3.6M14.8 14.8l3.6 3.6M18.4 5.6l-3.6 3.6M9.2 14.8l-3.6 3.6"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  text:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h9"/></svg>',
+  ear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h2l2-5 3 10 3-14 3 12 2-3h3"/></svg>',
+  stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 21V5M8 7h7M8 11h5"/></svg>',
+  board:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>'
+};
+
+/* ---------- Firebase (cloud sync) ---------- */
+const FIREBASE_CONFIG={
+  apiKey:"AIzaSyB7jXIik-CxswYaVsODAe1isp-qyODWEsE",
+  authDomain:"qcj52b.firebaseapp.com",
+  projectId:"qcj52b",
+  storageBucket:"qcj52b.firebasestorage.app",
+  messagingSenderId:"776835869546",
+  appId:"1:776835869546:web:6959f79434c502ce419313"
+};
+const COLS=['users','topics','proposals','posts','responses','session','checkins','practices'];
+
+/* ---------- seed data (ago = minutes before now) ---------- */
+const COLORS=['#2F45E0','#0B7F70','#7136C9','#C2342A','#A35C00','#1A6E9E','#9C2F74','#3D7A1F','#6B4E16','#4A55A2','#0F766E'];
+function seedRaw(){
+  const now=Date.now(),m=a=>now-a*60000;
+  return {
+  users:[
+   {id:'s1',real:'陈心怡',nick:'小鲸鱼'},{id:'s2',real:'林子轩',nick:'Kopi-O'},{id:'s3',real:'黄诗琪',nick:'奶茶少冰'},
+   {id:'s4',real:'李嘉欣',nick:'夜猫子'},{id:'s5',real:'陈伟明',nick:'椰浆饭'},{id:'s6',real:'吴雅婷',nick:'小树'},
+   {id:'s7',real:'王俊杰',nick:'臭豆腐'},{id:'s8',real:'张欣妍',nick:'云朵'},{id:'s9',real:'郑宇恒',nick:'篮球少年'},
+   {id:'s10',real:'刘佳慧',nick:'慢半拍'}
+  ],
+  topics:[
+   {id:'t1',order:4,title:'盲盒值不值得买？',desc:'有人说拆开的那一刻最快乐，有人说那是商家设计好的陷阱。你怎么看？',status:'live',when:'本周 · 10月12日上线',
+    sparks:['想想你最后一次“忍不住”买的东西。','如果钱是你自己打工赚的，你还会买吗？','你买的是玩具，还是拆开的那一瞬间？','你身边有没有人买了很多？他快乐吗？']},
+   {id:'t2',order:3,title:'“合群”真的很重要吗？',desc:'为了合群，你做过不想做的事吗？',status:'live',when:'上周 · 10月5日上线',
+    sparks:['有没有一次，你其实不同意，却没有说出来？','真正的朋友，会接受你说“不”吗？','合群和“跟别人一样”是同一回事吗？']},
+   {id:'t3',order:2,title:'动漫、游戏和网络小说，只是娱乐吗？',desc:'它们能不能也是一种文化？',status:'arch',when:'9月28日 · 已归档',sparks:['有哪部动漫或小说改变过你的想法？']},
+   {id:'t4',order:1,title:'“别人都这样做”，可以成为理由吗？',desc:'做决定的时候，你会受别人影响吗？',status:'sched',when:'排定：10月19日上线',sparks:['想想一次你“跟着大家”做的决定。']}
+  ],
+  proposals:[{id:'pp1',by:'s3',title:'为什么我们那么在意别人对我们的看法？',createdAt:m(300)},{id:'pp2',by:'s2',title:'网购让我们更容易冲动消费吗？',createdAt:m(200)}],
+  posts:[
+   {id:'p1',topic:'t1',by:'s1',dur:72,createdAt:m(2880),pinned:true,hidden:false,reports:0,likes:6,
+    text:'我上个月存了三个星期的零用钱，买了一个盲盒，结果抽到我最不想要的那个。那一刻我真的很 disappointed。可是我朋友说，这就是盲盒好玩的地方。所以我现在在想，我们买的到底是玩具，还是拆开的那一瞬间？'},
+   {id:'p2',topic:'t1',by:'s2',dur:58,createdAt:m(1440),pinned:false,hidden:false,reports:0,likes:4,
+    text:'我的看法有点不同。我觉得盲盒的设计就是让你一直买，因为你永远抽不到隐藏款。我表哥买了二十多个，花了差不多三百块。我觉得这不是理性消费，是被商家 design 好的。'},
+   {id:'p3',topic:'t1',by:'s3',dur:45,createdAt:m(1080),pinned:false,hidden:false,reports:0,likes:5,
+    text:'我没有买过盲盒，可是班上很多人都在讨论。有时候我会觉得自己有点 out。我想问大家，如果不买，是不是就很难加入话题？'},
+   {id:'p4',topic:'t2',by:'s4',dur:80,createdAt:m(8640),pinned:false,hidden:false,reports:0,likes:7,
+    text:'以前我觉得合群很重要，所以朋友去哪里我就去哪里。可是有一次他们都想去看恐怖片，我其实很怕，但是我不敢说。后来我发现，真正的朋友会接受你说不。'},
+   {id:'p5',topic:'t2',by:'s5',dur:50,createdAt:m(7200),pinned:false,hidden:false,reports:0,likes:2,
+    text:'我觉得合群还是重要的，因为在 CCA 里面，如果大家不合作，什么事都做不成。可是合群不等于什么都跟别人一样。'},
+   {id:'p6',topic:'t3',by:'s6',dur:66,createdAt:m(20160),pinned:false,hidden:false,reports:0,likes:3,
+    text:'我觉得动漫也是一种文化。我看的一部动漫讲的是一个乐队的故事，它让我开始去学吉他，也让我认识了很多一样喜欢音乐的朋友。'}
+  ],
+  responses:[
+   {id:'r1',post:'p1',by:'s4',tag:'agree',mode:'voice',dur:21,createdAt:m(2850),text:'我同意，因为拆开的那一刻真的很刺激，就像开礼物一样，期待感本身就是一种快乐。'},
+   {id:'r2',post:'p1',by:'s2',tag:'differ',mode:'text',createdAt:m(1500),text:'我有不同的看法，我认为那个瞬间很短，可是钱是真的花掉了。'},
+   {id:'r3',post:'p1',by:'s5',tag:'ask',mode:'voice',dur:12,createdAt:m(1450),text:'我想问问你，抽到不喜欢的那个，你后来怎么处理？'},
+   {id:'r4',post:'p2',by:'s6',tag:'agree',mode:'text',createdAt:m(1400),text:'我同意，因为我也看过有人为了一个隐藏款一直买，最后自己都不开心。'},
+   {id:'r5',post:'p2',by:'s7',tag:'differ',mode:'text',createdAt:m(1200),text:'我有不同的看法，我认为买盲盒的人都很蠢，自己笨就不要怪商家。',aiflag:'可能含贬低他人的用语'},
+   {id:'r6',post:'p3',by:'s1',tag:'ask',mode:'voice',dur:15,createdAt:m(900),text:'我想问问你，你觉得朋友之间一定要有一样的兴趣吗？'},
+   {id:'r7',post:'p3',by:'s7',tag:'agree',mode:'text',createdAt:m(600),text:'我同意，因为不买就是 out 啦哈哈哈，你真的很落伍。',reports:1},
+   {id:'r8',post:'p4',by:'s3',tag:'agree',mode:'voice',dur:18,createdAt:m(7300),text:'我同意，因为我也试过不敢说，后来说出来了，朋友其实一点也不介意。'}
+  ],
+  session:[],checkins:[],practices:seedPractices(now)};
+}
+
+/* RAW holds flat records (same shape locally and in Firestore); D is the view built from it. */
+let RAW={users:[],topics:[],proposals:[],posts:[],responses:[],session:[],checkins:[],practices:[]};
+let D={students:[],topics:[],proposals:[],posts:[],drafts:[],words:[],session:null,checkins:[],practices:[]};
+let CLOUD=false,LOADED=false,db=null,UNSUB=[],MYID='me',ME=null;
+const AUD={}; // audioId -> data URL cache
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let LIKED=new Set(ls.get('kaimai_liked',[]));
+
+function rel(ts){if(!ts)return '';const mi=Math.floor((Date.now()-ts)/60000);if(mi<1)return '刚刚';if(mi<60)return mi+' 分钟前';const h=Math.floor(mi/60);if(h<24)return h+' 小时前';const d=Math.floor(h/24);if(d<14)return d+' 天前';return Math.floor(d/7)+' 周前'}
+function buildView(){
+  const users=[...RAW.users];
+  if(ME&&!users.some(u=>u.id===ME.id))users.push(ME);
+  D.students=users;
+  D.topics=[...RAW.topics].sort((a,b)=>(b.order||0)-(a.order||0));
+  D.proposals=[...RAW.proposals].sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  const resp=[...RAW.responses].sort((a,b)=>(a.createdAt||0)-(b.createdAt||0)).map(r=>Object.assign({},r,{when:rel(r.createdAt)}));
+  D.posts=[...RAW.posts].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(p=>Object.assign({},p,{when:rel(p.createdAt),resp:resp.filter(r=>r.post===p.id)}));
+  D.session=(RAW.session||[]).find(x=>x.id==='live')||null;
+  D.checkins=[...(RAW.checkins||[])];
+  D.practices=[...(RAW.practices||[])].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0)).map(p=>Object.assign({},p,{when:rel(p.updatedAt||p.createdAt)}));
+}
+const BAD=/蠢|笨蛋|白痴|闭嘴|垃圾|去死|废物|丑八怪|神经病|智障|滚开/;
+const aiFlag=t=>BAD.test(t||'')?'可能含贬低他人的用语':null;
+const newId=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+/* ---------- data API: every change goes through here (local arrays or Firestore) ---------- */
+const api={
+  async add(col,obj){
+    obj.id=obj.id||newId(col[0]);obj.createdAt=obj.createdAt||Date.now();
+    if(CLOUD){const {id,...rest}=obj;await db.collection(col).doc(id).set(clean(rest))}
+    else{RAW[col].push(obj);refresh()}
+    return obj.id;
+  },
+  async upsert(col,id,fields){
+    if(CLOUD){await db.collection(col).doc(id).set(clean(fields),{merge:true})}
+    else{let o=RAW[col].find(x=>x.id===id);if(!o){o={id,createdAt:Date.now()};RAW[col].push(o)}Object.assign(o,fields);refresh()}
+  },
+  async update(col,id,fields){
+    if(CLOUD){const f={};for(const k in fields)f[k]=fields[k]===undefined?firebase.firestore.FieldValue.delete():fields[k];await db.collection(col).doc(id).update(f)}
+    else{const o=RAW[col].find(x=>x.id===id);if(!o)return;for(const k in fields){if(fields[k]===undefined)delete o[k];else o[k]=fields[k]}refresh()}
+  },
+  async inc(col,id,field,n){
+    if(CLOUD)await db.collection(col).doc(id).update({[field]:firebase.firestore.FieldValue.increment(n)});
+    else{const o=RAW[col].find(x=>x.id===id);if(o){o[field]=(o[field]||0)+n;refresh()}}
+  },
+  async remove(col,id){
+    if(CLOUD){
+      const b=db.batch();
+      if(col==='posts'){RAW.responses.filter(r=>r.post===id).forEach(r=>{b.delete(db.collection('responses').doc(r.id));audioDocs(r).forEach(d=>b.delete(d))})}
+      const o=RAW[col].find(x=>x.id===id);if(o)audioDocs(o).forEach(d=>b.delete(d));
+      b.delete(db.collection(col).doc(id));await b.commit();
+    }else{
+      if(col==='posts')RAW.responses=RAW.responses.filter(r=>r.post!==id);
+      RAW[col]=RAW[col].filter(x=>x.id!==id);refresh();
+    }
+  },
+  /* audio: Firestore docs hold at most ~1MB, so the recording is stored as base64 in chunks */
+  async putAudio(blob){
+    if(!blob)return {};
+    if(!CLOUD)return {audioUrl:URL.createObjectURL(blob)};
+    const data=await new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.onerror=rej;fr.readAsDataURL(blob)});
+    if(data.length>3800000)throw new Error('录音太大，请录短一点');
+    const audioId=newId('a'),SZ=700000,parts=Math.ceil(data.length/SZ);
+    const b=db.batch();
+    for(let k=0;k<parts;k++)b.set(db.collection('audio').doc(audioId+'_'+k),{data:data.slice(k*SZ,(k+1)*SZ),k});
+    await b.commit();AUD[audioId]=data;
+    return {audioId,audioParts:parts};
+  },
+  async getAudio(item){
+    if(item.audioUrl)return item.audioUrl;
+    if(!item.audioId)return null;
+    if(AUD[item.audioId])return AUD[item.audioId];
+    if(!CLOUD)return null;
+    const snaps=await Promise.all(Array.from({length:item.audioParts||1},(_,k)=>db.collection('audio').doc(item.audioId+'_'+k).get()));
+    const data=snaps.map(s=>s.exists?s.data().data:'').join('');
+    AUD[item.audioId]=data;return data;
+  },
+  async reset(){
+    const seed=seedRaw();
+    if(CLOUD){
+      for(const col of ['posts','responses','topics','proposals','audio','session','checkins','practices']){
+        const snap=await db.collection(col).get();
+        for(let i=0;i<snap.docs.length;i+=400){const b=db.batch();snap.docs.slice(i,i+400).forEach(d=>b.delete(d.ref));await b.commit()}
+      }
+      await seedCloud(seed);
+    }else{
+      const mine=RAW.users.filter(u=>!/^s\d+$/.test(u.id));
+      RAW=seed;RAW.users=RAW.users.concat(mine);refresh();
+    }
+  }
+};
+function clean(o){const r={};for(const k in o){if(o[k]!==undefined&&k!=='audioUrl'&&k!=='when'&&k!=='resp')r[k]=o[k]}return r}
+function audioDocs(o){return o&&o.audioId?Array.from({length:o.audioParts||1},(_,k)=>db.collection('audio').doc(o.audioId+'_'+k)):[]}
+async function seedCloud(seed){
+  const b=db.batch();
+  for(const col of COLS)for(const o of seed[col]){const {id,...rest}=o;b.set(db.collection(col).doc(id),clean(rest),{merge:col==='users'})}
+  await b.commit();
+}
+
+/* ---------- start-up: try the cloud, fall back to an on-page demo ---------- */
+let seenPosts=null,requestedSeed=false;
+function refresh(){buildView();sessionWatch();requestRender()}
+function setSync(state,detail){
+  const c=document.getElementById('syncChip');
+  if(c){c.className='sync '+(state==='on'?'on':state==='wait'?'':'off');c.innerHTML=`<i></i>${state==='on'?'即时同步中':state==='wait'?'连线中……':'示范模式（未连线）'}`;c.title=detail||''}
+  const notes=document.querySelectorAll('.note-dyn');
+  const msg=state==='on'
+    ?'这个网站连上了云端资料库：你发布的播客和回应，其他人的手机几秒内就会看到，重新整理也不会消失。示范同学的播客以语音朗读模拟。'
+    :'现在是示范模式：内容只保存在这个页面里，重新整理即还原。录音仍是你的真实原声，第一次会请你允许使用麦克风。';
+  notes.forEach(n=>n.textContent=msg);
+}
+function startLocal(reason){
+  UNSUB.forEach(u=>{try{u()}catch(e){}});UNSUB=[];
+  CLOUD=false;LOADED=true;MYID='me';ME={id:'me',real:'展位访客',nick:'你（访客）'};
+  RAW=seedRaw();setSync('off',reason||'');refresh();
+}
+function startCloud(){
+  if(typeof firebase==='undefined'){startLocal('无法载入 Firebase');return}
+  try{if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore()}catch(e){startLocal('Firebase 初始化失败');return}
+  CLOUD=true;LOADED=false;setSync('wait');
+  ME=ls.get('kaimai_me',null);MYID=ME?ME.id:null;
+  const got={};
+  const timer=setTimeout(()=>{if(!LOADED)startLocal('连线逾时：请确认 Firestore 已建立，且网络正常')},10000);
+  COLS.forEach(col=>{
+    const un=db.collection(col).onSnapshot(snap=>{
+      if(!CLOUD)return;
+      RAW[col]=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+      got[col]=true;
+      if(col==='topics'&&snap.empty&&!requestedSeed){requestedSeed=true;seedCloud(seedRaw()).catch(e=>console.warn(e))}
+      if(!LOADED&&COLS.every(c=>got[c])){LOADED=true;clearTimeout(timer);setSync('on')}
+      if(col==='posts'){
+        const ids=new Set(RAW.posts.map(p=>p.id));
+        if(seenPosts&&LOADED){RAW.posts.filter(p=>!seenPosts.has(p.id)&&p.by!==MYID&&!p.hidden).forEach(p=>{const u=RAW.users.find(x=>x.id===p.by);toast(`${u?u.nick:'有同学'} 刚刚开麦了`)})}
+        seenPosts=ids;
+      }
+      refresh();
+    },err=>{
+      console.warn('Firestore',col,err);
+      if(!LOADED){clearTimeout(timer);startLocal(err&&err.code==='permission-denied'?'没有读取权限：请检查 Firestore 安全规则（测试模式可能已过期）':'云端资料库连不上：'+(err&&err.code||''))}
+      else toast('同步中断，请检查网络');
+    });
+    UNSUB.push(un);
+  });
+}
+
+
+const DICT={"blind box":"盲盒","secret":"隐藏款","hidden edition":"隐藏款","limited edition":"限量版","collab":"联名款","collaboration":"合作；联名","merch":"周边商品","merchandise":"周边商品","figurine":"公仔；手办","collect":"收集","collector":"收藏家","collection":"收藏","impulse buying":"冲动消费","impulse":"冲动","online shopping":"网购","shopping":"购物","shopping spree":"疯狂购物","add to cart":"加入购物车","checkout":"结账","free shipping":"免运费","flash sale":"限时抢购","sale":"促销","discount":"折扣","voucher":"优惠券","coupon":"优惠券","promo code":"优惠码","cashback":"现金回扣","deal":"优惠；划算的交易","bargain":"便宜货；讨价还价","worth it":"值得","not worth it":"不值得","worth":"值得","waste":"浪费","waste of money":"浪费钱","overpriced":"太贵了；定价过高","expensive":"贵","cheap":"便宜","affordable":"买得起；价格实惠","budget":"预算","pocket money":"零用钱","allowance":"零用钱","save money":"存钱","savings":"储蓄","spend":"花（钱）","spending":"消费；开销","splurge":"挥霍；大手笔花钱","treat myself":"犒赏自己","self-reward":"奖励自己","reward":"奖励","brand":"品牌","branded":"名牌的","luxury":"奢侈品","designer":"名牌；设计师","logo":"标志","fake":"假货；仿冒的","dupe":"平替","alternative":"替代品","second-hand":"二手","preloved":"二手","resell":"转卖","reseller":"炒卖的人","scalper":"黄牛","hype":"热潮；炒作","trend":"潮流","trendy":"时髦；潮","fashion":"时尚","style":"风格","outfit":"穿搭","aesthetic":"审美；风格","fast fashion":"快时尚","consumerism":"消费主义","materialistic":"物质主义的","rational":"理性","irrational":"不理性","regret":"后悔","buyer's remorse":"买了就后悔","unboxing":"开箱","gamble":"赌博；碰运气","gambling":"赌博","addicted":"上瘾","addiction":"瘾；成瘾","lucky":"幸运","unlucky":"倒霉","random":"随机","probability":"概率","marketing":"营销","advertisement":"广告","ad":"广告","ads":"广告","sponsored":"赞助的；业配","review":"评价；评测","rating":"评分","customer":"顾客","seller":"卖家","platform":"平台","social media":"社交媒体","influencer":"网红","content creator":"内容创作者","youtuber":"YouTube 创作者","streamer":"直播主","livestream":"直播","live":"直播","post":"贴文；发帖","story":"限时动态","reel":"短视频","short video":"短视频","viral":"爆红；疯传","trending":"热门；上热搜","algorithm":"算法","for you page":"推荐页","feed":"动态；信息流","scroll":"滑（手机）","doomscrolling":"停不下来地刷手机","screen time":"屏幕使用时间","notification":"通知","follower":"粉丝；关注者","followers":"粉丝","follow":"关注","unfollow":"取消关注","like":"点赞（也是口头禅，可以省略）","likes":"点赞数","comment":"留言；评论","share":"分享","repost":"转发","hashtag":"话题标签","filter":"滤镜","selfie":"自拍","meme":"梗图；迷因","clickbait":"标题党","fake news":"假新闻","cyberbullying":"网络霸凌","troll":"网络喷子","hater":"黑粉；酸民","keyboard warrior":"键盘侠","cancel culture":"抵制文化","privacy":"隐私","online":"网上；在线","offline":"线下；离线","chat":"聊天","group chat":"群聊","dm":"私信","text":"发短信","emoji":"表情符号","sticker":"贴图","anime":"动漫","manga":"漫画","comic":"漫画","cartoon":"卡通","cosplay":"角色扮演","character":"角色","fan":"粉丝","fandom":"粉丝圈","fanfic":"同人小说","fan fiction":"同人小说","idol":"偶像","k-pop":"韩流音乐","concert":"演唱会","fangirl":"追星女孩","stan":"死忠粉","web novel":"网络小说","novel":"小说","drama":"电视剧；戏剧","series":"连续剧","movie":"电影","binge-watch":"追剧；一口气看完","spoiler":"剧透","plot":"情节","ending":"结局","game":"游戏","games":"游戏","gaming":"打游戏","gamer":"玩家","online game":"网络游戏","mobile game":"手机游戏","level up":"升级","rank":"排名；段位","skin":"皮肤（游戏角色外观）","in-game purchase":"游戏内购","gacha":"抽卡","loot box":"开箱机制；战利品箱","grind":"刷（游戏）；苦练","noob":"新手；菜鸟","pro":"高手","teammate":"队友","entertainment":"娱乐","culture":"文化","pop culture":"流行文化","subculture":"次文化","art form":"艺术形式","creativity":"创造力","imagination":"想象力","escape":"逃避","hobby":"爱好","interest":"兴趣","passion":"热情；热爱","music":"音乐","song":"歌曲","playlist":"歌单","podcast":"播客","peer pressure":"同侪压力","peer":"同龄人；同侪","peers":"同龄人","fit in":"融入；合群","stand out":"与众不同；突出","belong":"有归属","belonging":"归属感","identity":"身份认同","self-identity":"自我认同","self-esteem":"自尊心","self-confidence":"自信心","confident":"有自信","insecure":"没有安全感；不自信","comparison":"比较","compare":"比较","jealous":"妒忌","envy":"羡慕","unique":"独特","different":"不一样","normal":"正常","weird":"奇怪","cringe":"尴尬；让人起鸡皮疙瘩","awkward":"尴尬","embarrassing":"丢脸","judge":"评判；批评","judgement":"评判","opinion":"看法；意见","opinions":"看法","mainstream":"主流","popular":"受欢迎","unpopular":"不受欢迎","cool":"酷","uncool":"不酷；落伍","out":"落伍；跟不上","outdated":"过时","left out":"被冷落；被排挤","exclude":"排挤","excluded":"被排挤","lonely":"孤单","alone":"独自；一个人","friend":"朋友","friends":"朋友","best friend":"好朋友；死党","bestie":"闺蜜；死党","friend group":"朋友圈子","clique":"小圈子","squad":"小团体","classmate":"同学","classmates":"同学","relationship":"关系","friendship":"友谊","loyal":"忠诚","trust":"信任","betray":"背叛","gossip":"八卦；说闲话","rumour":"谣言","rumor":"谣言","bully":"霸凌；欺负","bullying":"霸凌","toxic":"有毒的；让人不舒服的","red flag":"危险信号","green flag":"好的信号","boundary":"界限","boundaries":"界限","say no":"拒绝；说不","no":"不；拒绝","influence":"影响","influenced":"受影响","follow the crowd":"随大流；跟风","copy":"模仿","conform":"顺从；随大流","conformity":"从众","herd mentality":"从众心理","fomo":"错失恐惧（怕错过）","yolo":"人生只有一次","role model":"榜样","image":"形象","reputation":"名声","approval":"认同；赞许","acceptance":"接纳","respect":"尊重","individuality":"个性","personality":"性格；个性","be yourself":"做自己","authentic":"真实的","fake friend":"假朋友","introvert":"内向的人","extrovert":"外向的人","shy":"害羞","happy":"开心","sad":"难过","angry":"生气","upset":"不开心；难过","frustrated":"沮丧；烦躁","annoyed":"烦","disappointed":"失望","excited":"兴奋","nervous":"紧张","anxious":"焦虑","anxiety":"焦虑","stress":"压力","stressed":"有压力","pressure":"压力","scared":"害怕","afraid":"害怕","worried":"担心","relieved":"松了一口气","proud":"骄傲；自豪","guilty":"内疚","guilt":"罪恶感；内疚","guilty pleasure":"罪恶快感；明知不好却忍不住喜欢的东西","satisfied":"满足","satisfaction":"满足感","bored":"无聊","boring":"无聊的","lazy":"懒","tired":"累","exhausted":"筋疲力尽","motivated":"有动力","motivation":"动力","confused":"困惑","surprised":"惊讶","surprise":"惊喜","shocked":"震惊","grateful":"感恩","hopeful":"充满希望","hopeless":"绝望","lonely feeling":"孤独感","mood":"心情","emotion":"情绪","emotional":"情绪化","mental health":"心理健康","self-care":"照顾自己","burnout":"身心俱疲","overthinking":"想太多","dopamine":"多巴胺","instant gratification":"即时满足","satisfying":"让人满足的","thrill":"刺激感","school":"学校","cca":"课外活动（CCA）","exam":"考试","exams":"考试","test":"测验","homework":"作业","project":"专题作业","deadline":"截止日期","grades":"成绩","result":"成绩；结果","results":"成绩；结果","tuition":"补习","teacher":"老师","parents":"父母","parent":"家长","family":"家人","siblings":"兄弟姐妹","generation gap":"代沟","curfew":"门禁时间","rules":"规矩；规则","freedom":"自由","independent":"独立","responsibility":"责任","responsible":"负责任","choice":"选择","choose":"选择","decision":"决定","decide":"决定","habit":"习惯","routine":"日常作息","lifestyle":"生活方式","balance":"平衡","time management":"时间管理","priority":"优先事项","priorities":"优先事项","goal":"目标","goals":"目标","future":"未来","dream":"梦想","career":"职业","part-time job":"兼职","money":"钱","phone":"手机","smartphone":"智能手机","weekend":"周末","holiday":"假期","mall":"购物中心","canteen":"食堂","hawker centre":"小贩中心","bubble tea":"珍珠奶茶","agree":"同意","disagree":"不同意","argue":"争论","argument":"论点；争论","point":"观点；重点","viewpoint":"观点","perspective":"角度；观点","reason":"理由","example":"例子","for example":"例如","evidence":"证据","fact":"事实","in fact":"事实上","actually":"其实","honestly":"说实话","basically":"基本上","literally":"简直；真的","seriously":"说真的","obviously":"显然","maybe":"也许","probably":"大概","definitely":"一定","of course":"当然","because":"因为","so":"所以","but":"可是；但是","however":"然而","although":"虽然","then":"然后","also":"也","anyway":"总之；反正","whatever":"随便","in conclusion":"总的来说","on the other hand":"另一方面","pros and cons":"好处和坏处","advantage":"好处；优点","disadvantage":"坏处；缺点","benefit":"好处","problem":"问题","issue":"问题；议题","solution":"解决方法","debate":"辩论","discuss":"讨论","discussion":"讨论","question":"问题","answer":"答案；回答","explain":"解释","mean":"意思是","meaning":"意义；意思","point of view":"观点","depends":"看情况","it depends":"看情况","fair":"公平","unfair":"不公平","right":"对；权利","wrong":"错","true":"真的；对的","important":"重要","necessary":"必要","useless":"没用","useful":"有用","value":"价值","values":"价值观","worth it or not":"值不值得","ok":"好的；可以","okay":"好的；可以","sure":"当然；好的","vibe":"感觉；氛围","vibes":"感觉；氛围","lowkey":"其实有点；偷偷地","highkey":"很明显地；非常","slay":"太厉害了；超赞","flex":"炫耀","show off":"炫耀","main character":"主角光环","npc":"路人（像游戏里的配角）","salty":"酸；不爽","savage":"狠；毒舌","chill":"放松；淡定","relax":"放松","mood swing":"情绪起伏","sus":"可疑","no cap":"不骗你；说真的","cap":"吹牛","ghost":"突然不回复；消失","ghosted":"被已读不回","spam":"刷屏","emo":"丧；情绪低落","basic":"普通；没特色","extra":"太夸张","boomer":"老古板","gen z":"Z世代","glow up":"变美；变好","touch grass":"多出去走走（别一直上网）","rizz":"魅力；撩人的本事","simp":"过度讨好的人","goat":"史上最强","iconic":"经典；有代表性","op":"太强了"};
+const DEMO={
+ t1:'我觉得盲盒其实就是一种 gamble。然后就是，你不知道会抽到什么，所以会一直想买。我自己有一次花了很多钱，可是还是没有抽到我要的那个，就是觉得很 waste。',
+ t2:'我觉得合群是重要的，可是不应该为了 fit in 去做自己不喜欢的事。就是，比如我朋友都喜欢打游戏，我其实比较喜欢画画，我觉得这样也很好。',
+ def:'我觉得这个问题很有意思。因为每个人的想法都不一样，比如我自己就……'
+};
+const PREFIX={agree:'我同意，因为',differ:'我有不同的看法，我认为',ask:'我想问问你，'};
+const TAGNAME={agree:'我同意',differ:'不同看法',ask:'想问问你'};
+
+/* ---------- state ---------- */
+let S={view:'student',screen:'home',topic:null,post:null,
+  comp:{tag:'agree',mode:'voice',text:PREFIX.agree,recState:'idle',secs:0,audioUrl:null,demo:false},
+  rec:{step:1,topic:'t1',spark:null,rescueQ:'',rescueA:null,secs:0,timer:null,text:'',draftId:null,status:'idle',mode:'real',err:null,audioUrl:null},
+  tt:'class',filter:'all',votes:{},reveal:{},lvl:'easy',pr:null,prView:null,proj:false,projReveal:false,spot:null,pf:'all',tExp:null,tCm:'',slider:null,wallDraft:null,lt:null,classTopic:null,join:null,working:false,_pending:false,teacherOK:false,pin:'',pinErr:false,confirm:null,newT:{title:'',desc:'',sparks:'',mode:'now',date:'2026-10-26'},propose:''};
+
+const dev=document.getElementById('device');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stu=id=>D.students.find(s=>s.id===id)||(ME&&ME.id===id?ME:{id,nick:'同学',real:'（未知）'});
+const col=id=>COLORS[hash(String(id))%COLORS.length];
+const av=(id,cls='')=>{const s=stu(id);const ch=[...(s.nick||'?')][0];return `<span class="av ${cls}" style="background:${col(id)}" aria-hidden="true">${esc(ch)}</span>`};
+const mmss=n=>`${Math.floor(n/60)}:${String(n%60).padStart(2,'0')}`;
+const topicOf=id=>D.topics.find(t=>t.id===id);
+const visiblePosts=tid=>D.posts.filter(p=>p.topic===tid&&!p.hidden).sort((a,b)=>(b.pinned-a.pinned));
+function hash(s){let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
+function waveHTML(id,n=30){let h=hash(id);let out='';for(let i=0;i<n;i++){h=(h*1103515245+12345)>>>0;const v=22+(h%78);out+=`<i style="height:${v}%"></i>`}return `<div class="wave" data-w="${id}">${out}</div>`}
+
+/* ---------- playback (TTS when available) ---------- */
+let P={id:null,timer:null,t0:0,len:0,audio:null};
+function findItem(id){if(typeof id==='string'&&/^(pr|prd|ex):/.test(id))return findExtra(id);for(const p of D.posts){if(p.id===id)return p;for(const r of p.resp)if(r.id===id)return r}return null}
+function findText(id){return findItem(id)?.text||''}
+function audioFor(id){if(id==='recdraft')return S.rec.audioUrl;if(id==='compdraft')return S.comp.audioUrl;const it=findItem(id);return it?(it.audioUrl||(it.audioId&&AUD[it.audioId])||null):null}
+function durFor(id){if(id==='recdraft')return S.rec.secs;if(id==='compdraft')return S.comp.secs;return findItem(id)?.dur||10}
+function paint(id,frac){document.querySelectorAll(`.wave[data-w="${id}"]`).forEach(w=>{const bars=w.children;const k=Math.round(frac*bars.length);for(let i=0;i<bars.length;i++)bars[i].classList.toggle('done',i<k)})}
+function stopPlay(){if(!P.id)return;clearInterval(P.timer);try{speechSynthesis.cancel()}catch(e){}if(P.audio){try{P.audio.pause()}catch(e){}P.audio=null}paint(P.id,0);document.querySelectorAll(`[data-play="${P.id}"]`).forEach(b=>b.classList.remove('on'));P.id=null;setTimeout(()=>{if(typeof flushRender==='function')flushRender()},0)}
+function playUrl(id,url){
+  const au=new Audio(url);P.audio=au;P.len=Math.max(1,durFor(id))*1000;
+  au.onended=()=>{if(P.id===id)stopPlay()};
+  au.play().catch(()=>{toast('这台设备无法播放这段录音');stopPlay()});
+  P.timer=setInterval(()=>{paint(id,Math.min(1,au.currentTime*1000/P.len))},120);
+}
+function togglePlay(id){
+  if(P.id===id){stopPlay();return}
+  stopPlay();
+  P.id=id;
+  document.querySelectorAll(`[data-play="${id}"]`).forEach(b=>b.classList.add('on'));
+  const url=audioFor(id);
+  if(url){playUrl(id,url);return}
+  const it=findItem(id);
+  if(it&&it.audioId){ // recording stored in the cloud: fetch it first
+    toast('载入录音中……');
+    api.getAudio(it).then(u=>{if(P.id!==id)return;if(u)playUrl(id,u);else{toast('找不到这段录音');stopPlay()}}).catch(()=>{toast('录音载入失败，请检查网络');stopPlay()});
+    return;
+  }
+  const text=findText(id);P.len=Math.max(4,text.length*0.24)*1000;P.t0=Date.now();
+  try{if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';u.rate=1;const v=speechSynthesis.getVoices().find(v=>/zh/i.test(v.lang));if(v)u.voice=v;u.onend=()=>{if(P.id===id)stopPlay()};speechSynthesis.speak(u)}}catch(e){}
+  P.timer=setInterval(()=>{const f=(Date.now()-P.t0)/P.len;if(f>=1){stopPlay();return}paint(id,f)},150);
+}
+
+/* ---------- microphone: real recording + live levels + speech-to-text when the browser offers it ---------- */
+const MIC={active:false};
+async function micStart(levelSel,capSel){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){const e=new Error('unsupported');e.name='Unsupported';throw e}
+  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+  let mr;const mt=['audio/webm;codecs=opus','audio/mp4','audio/webm','audio/ogg;codecs=opus'].find(t=>{try{return MediaRecorder.isTypeSupported(t)}catch(e){return false}});
+  try{mr=new MediaRecorder(stream,Object.assign({audioBitsPerSecond:32000},mt?{mimeType:mt}:{}))}catch(e){mr=new MediaRecorder(stream)}
+  const chunks=[];
+  mr.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+  mr.start(250);
+  Object.assign(MIC,{active:true,stream,mr,chunks,text:'',final:'',sr:null,ctx:null,raf:0});
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;const ctx=new AC();MIC.ctx=ctx;try{ctx.resume()}catch(e){}
+    const an=ctx.createAnalyser();an.fftSize=64;ctx.createMediaStreamSource(stream).connect(an);
+    const buf=new Uint8Array(an.frequencyBinCount),tbuf=new Uint8Array(an.fftSize);
+    /* voice stats for the AI echo: how much of the time the student was speaking, and the pauses */
+    const st={t0:performance.now(),last:performance.now(),voiced:0,total:0,silRun:0,longest:0,pauses:0};MIC.stats=st;
+    const loop=()=>{if(!MIC.active)return;an.getByteFrequencyData(buf);an.getByteTimeDomainData(tbuf);
+      const bars=document.querySelectorAll(levelSel+' i');
+      bars.forEach((b,i)=>{const v=buf[(i*2)%buf.length]/255;b.style.height=(12+v*88)+'%'});
+      let sum=0;for(let i=0;i<tbuf.length;i++){const d=(tbuf[i]-128)/128;sum+=d*d}
+      const rms=Math.sqrt(sum/tbuf.length),now=performance.now(),dt=Math.min(200,now-st.last);st.last=now;st.total+=dt;
+      if(rms>0.025){st.voiced+=dt;if(st.silRun>2000)st.pauses++;st.silRun=0}else{st.silRun+=dt;if(st.silRun>st.longest)st.longest=st.silRun}
+      MIC.raf=requestAnimationFrame(loop)};
+    loop();
+  }catch(e){}
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(SR){try{
+    const sr=new SR();sr.lang='zh-CN';sr.continuous=true;sr.interimResults=true;
+    sr.onresult=e=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)MIC.final+=t;else interim+=t}
+      MIC.text=MIC.final+interim;const c=capSel&&document.querySelector(capSel);if(c)c.textContent=MIC.text||'……'};
+    sr.onerror=()=>{};sr.onend=()=>{if(MIC.active){try{sr.start()}catch(e){}}};
+    sr.start();MIC.sr=sr;
+  }catch(e){}}
+}
+function micStop(){return new Promise(res=>{
+  if(!MIC.active||!MIC.mr){res(null);return}
+  MIC.active=false;cancelAnimationFrame(MIC.raf);
+  try{MIC.sr&&MIC.sr.stop()}catch(e){}
+  const mr=MIC.mr;
+  mr.onstop=()=>{
+    const blob=new Blob(MIC.chunks,{type:mr.mimeType||'audio/webm'});
+    MIC.stream.getTracks().forEach(t=>t.stop());try{MIC.ctx&&MIC.ctx.close()}catch(e){}
+    setTimeout(()=>res({url:URL.createObjectURL(blob),blob,text:(MIC.text||MIC.final||'').trim(),stats:MIC.stats||null}),600);
+  };
+  try{mr.stop()}catch(e){res(null)}
+})}
+function micAbort(){if(!MIC.active)return;MIC.active=false;cancelAnimationFrame(MIC.raf);
+  try{MIC.sr&&MIC.sr.abort()}catch(e){}try{MIC.mr.onstop=null;MIC.mr.stop()}catch(e){}
+  try{MIC.stream.getTracks().forEach(t=>t.stop())}catch(e){}try{MIC.ctx&&MIC.ctx.close()}catch(e){}}
+const hasSTT=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+const micErr=e=>e&&(e.name==='NotAllowedError'||e.name==='SecurityError')?'denied':'unavail';
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){let t=dev.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');dev.appendChild(t)}t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>{t.hidden=true},2400)}
+
+/* ---------- AI echo (rule-based demo) ---------- */
+function analyze(text){
+  const good=[],tries=[],words=[];
+  let lower=' '+text.toLowerCase()+' ';
+  const keys=Object.keys(DICT).sort((a,b)=>b.length-a.length);
+  for(const k of keys){const re=new RegExp('(^|[^a-z])'+k.replace(/[-]/g,'\\-')+'(?=[^a-z]|$)','g');if(re.test(lower)){words.push([k,DICT[k]]);lower=lower.replace(re,'$1 ')}}
+  const rest=(lower.match(/[a-z]{2,}/g)||[]);rest.forEach(w=>{if(!words.some(x=>x[0]===w))words.push([w,null])});
+  const cjk=(text.match(/[一-鿿]/g)||[]).length;
+  if(/我觉得|我认为|我的看法|我同意|不同意/.test(text))good.push('你的立场很清楚，听众一开始就知道你站在哪一边。');else tries.push('开头先用一句话说清楚立场，例如“我觉得……”。');
+  if(/因为|所以|原因|才会/.test(text))good.push('你说出了理由，不只是表态。');else tries.push('试着加一句“因为……”，让大家知道你为什么这样想。');
+  if(/比如|例如|有一次|我自己|上个月|以前|我朋友|我表哥|我妈妈|我爸爸/.test(text))good.push('你用了自己的经历做例子，听众很容易有共鸣。');else tries.push('加一个你自己或身边人的小故事，观点会更有说服力。');
+  if(/大家|你们|我想问|你呢/.test(text))good.push('你在和听众对话，很有播客的感觉。');
+  const fill=(text.match(/然后|就是|那个|嗯/g)||[]).length;
+  if(fill>=2)tries.push(`“就是”“然后”出现了 ${fill} 次。说之前先停一秒，听众反而更愿意听下去。`);
+  if(cjk<35)tries.push('可以再多说一点，60 秒大约能说 150 个字。');
+  return {good,tries:tries.slice(0,3),words,cjk};
+}
+
+/* feedback from the recording itself, so the AI echo works even without a transcript */
+function voiceFeedback(r){
+  const st=r.stats;if(!st||!st.total)return null;
+  const ratio=Math.round(st.voiced/st.total*100),longest=Math.round(st.longest/100)/10,secs=r.secs||Math.round(st.total/1000);
+  const good=[],tries=[];
+  if(secs>=45)good.push(`你说了 ${secs} 秒，长度刚刚好，内容有时间展开。`);
+  else if(secs<20)tries.push(`这次只说了 ${secs} 秒。试着说到 60 秒左右：先说立场，再加一个理由和一个例子。`);
+  else tries.push(`你说了 ${secs} 秒。再多加一个例子，就能说到 60 秒左右。`);
+  if(ratio>=70)good.push('你几乎没有冷场，说得很流畅。');
+  else if(ratio<45)tries.push('停顿比较多。开始前先想好第一句话，说的时候就会顺很多。');
+  if(longest>=3)tries.push(`最长停了 ${longest} 秒。卡住时可以先说“我想想……”或“比如说……”，帮自己接下去。`);
+  else if(secs>=10)good.push('没有长时间的停顿，节奏很好。');
+  return {ratio,longest,good,tries};
+}
+
+/* ---------- render ---------- */
+function render(){
+  S._pending=false;
+  stopPlay();
+  const pj=S.view==='teacher'&&S.proj&&S.teacherOK;
+  dev.classList.toggle('wide',S.view==='teacher');dev.classList.toggle('proj',pj);
+  document.querySelector('.shell')?.classList.toggle('projmode',pj);
+  document.getElementById('vStudent').setAttribute('aria-pressed',S.view==='student');
+  document.getElementById('vTeacher').setAttribute('aria-pressed',S.view==='teacher');
+  const keepScroll=dev.querySelector('.scroll')?.scrollTop||0;
+  const tn=dev.querySelector('.toast');
+  dev.innerHTML = S.view==='student'?student():teacher();
+  if(tn)dev.appendChild(tn);
+  if(S._keep){const sc=dev.querySelector('.scroll');if(sc)sc.scrollTop=keepScroll;S._keep=false}
+}
+function go(screen,extra={}){Object.assign(S,{screen},extra);render()}
+
+function student(){
+  if(!LOADED)return loadingScreen();
+  if(CLOUD&&!MYID)return joinScreen();
+  let body='';
+  if(S.screen==='home')body=home();
+  else if(S.screen==='topic')body=topicScreen();
+  else if(S.screen==='post')body=postScreen();
+  else if(S.screen==='rec')body=recScreen();
+  else if(S.screen==='me')body=meScreen();
+  else if(S.screen==='class')body=classScreen();
+  else if(S.screen==='learn')body=learnScreen();
+  else if(S.screen==='practice')body=practiceScreen();
+  else if(S.screen==='mypr')body=myPrScreen();
+  const cur=s=>S.screen===s||(s==='home'&&(S.screen==='topic'||S.screen==='post'))||(s==='learn'&&(S.screen==='practice'||S.screen==='mypr'))?'aria-current="page"':'';
+  return `<div class="scroll">${body}</div>
+  <nav class="nav" aria-label="主导航">
+    <button data-a="nav" data-s="home" ${cur('home')}>${I.home}话题</button>
+    <button data-a="nav" data-s="learn" ${cur('learn')}>${I.book}学练</button>
+    <div><button class="micbtn" data-a="startRec" aria-label="开麦">${I.mic}</button><div class="miclabel">开麦</div></div>
+    <button data-a="nav" data-s="class" ${cur('class')}>${I.board}课堂${sess()?'<i class="livedot" aria-label="上课中"></i>':''}</button>
+    <button data-a="nav" data-s="me" ${cur('me')}>${I.user}我的</button>
+  </nav>`;
+}
+
+function home(){
+  const live=D.topics.filter(t=>t.status==='live');
+  const [feat,...others]=live;
+  const arch=D.topics.filter(t=>t.status==='arch');
+  const avs=tid=>{const ids=[...new Set(visiblePosts(tid).map(p=>p.by))].slice(0,4);return `<span class="avs">${ids.map(i=>av(i)).join('')}</span>`};
+  return `<header class="appbar"><span class="logo">开麦</span><span style="flex:1"></span><span class="classtag">3E2 华文班</span></header>
+  ${classBanner()}
+  ${feat?`<section class="feature" aria-label="本周话题">
+    <span class="onair">本周话题 · ON AIR</span>
+    <h2>${esc(feat.title)}</h2><p>${esc(feat.desc)}</p>
+    <div class="row">${avs(feat.id)}<span class="meta">${visiblePosts(feat.id).length} 位同学开过麦</span></div>
+    <div class="row"><button class="btn onair-b" data-a="openTopic" data-t="${feat.id}">${I.ear}去听听</button><button class="btn ghost" data-a="startRec" data-t="${feat.id}" style="color:var(--paper)">${I.mic}我要开麦</button></div>
+  </section>`:'<div class="empty">老师还没有放上本周话题。</div>'}
+  ${others.length?`<div class="eyebrow">仍在讨论</div><div class="tlist">${others.map(t=>tCard(t)).join('')}</div>`:''}
+  ${arch.length?`<div class="eyebrow">已归档 · 可以听，不能再发</div><div class="tlist">${arch.map(t=>tCard(t,true)).join('')}</div>`:''}
+  <div class="eyebrow">提名下周话题</div>
+  <div class="panel"><p class="hint" style="font-size:13px">你有想和大家聊的问题吗？提名后老师会看到。</p>
+    <div class="rescue"><input type="text" id="propose" placeholder="例如：我们为什么那么爱追星？" value="${esc(S.propose)}"><button class="btn primary sm" data-a="propose">提名</button></div></div>`;
+}
+function tCard(t,arch){const n=visiblePosts(t.id).length;return `<button class="tcard ${arch?'archived':''}" data-a="openTopic" data-t="${t.id}"><span class="t"><b>${esc(t.title)}</b><small>${n} 条播客 · ${esc(t.when)}</small></span>${I.ear.replace('<svg','<svg width="20" height="20"')}</button>`}
+
+function postCard(p){
+  const s=stu(p.by);
+  return `<article class="post ${p.pinned?'pinned':''}">
+    <div class="phead">${av(p.by)}<div class="who"><b>${esc(s.nick)}</b><small>${esc(p.when)}</small></div>${p.pinned?'<span class="badge pin">老师推荐</span>':''}${p.hidden?'<span class="badge" style="background:var(--sunk);color:var(--muted)">老师已隐藏</span>':''}</div>
+    <div class="player"><button class="play" data-a="play" data-play="${p.id}" aria-label="播放 ${esc(s.nick)} 的播客">${I.play}${I.pause}</button>${waveHTML(p.id)}<span class="dur">${mmss(p.dur)}</span></div>
+    <p class="excerpt">${p.text?esc(p.text):'原声播客，没有文字稿。按播放收听。'}</p>
+    <div class="pfoot"><span class="l">${likeCtl(p)}<span>${p.resp.filter(r=>!r.hidden).length} 条回应</span></span><button class="linkbtn" data-a="openPost" data-p="${p.id}">听完整版并回应 →</button></div>
+  </article>`;
+}
+
+/* Likes: anyone can like; the number is shown only to the post's author. */
+function likeCtl(p){
+  if(p.by===MYID)return `<span class="mylikes" title="只有你看得到">${I.heart}${p.likes||0} 人喜欢 · 只有你看得到</span>`;
+  return `<button class="likebtn" data-a="like" data-p="${p.id}" aria-pressed="${LIKED.has(p.id)}" aria-label="${LIKED.has(p.id)?'取消喜欢':'喜欢这条播客'}">${I.heart}${LIKED.has(p.id)?'已喜欢':'喜欢'}</button>`;
+}
+function topicScreen(){
+  const t=topicOf(S.topic);if(!t){S.screen='home';return home()}const posts=visiblePosts(t.id);
+  const sp=S.spark?`<div class="spark" aria-live="polite">${esc(S.spark)}</div>`:'';
+  return `<header class="appbar"><button class="iconbtn" data-a="nav" data-s="home" aria-label="返回">${I.back}</button><h1>${esc(t.title)}</h1></header>
+  <p style="margin:0 0 12px;color:var(--muted)">${esc(t.desc)}</p>
+  ${t.status==='live'?`<div class="actions" style="margin-bottom:12px"><button class="btn primary" data-a="startRec" data-t="${t.id}">${I.mic}我要开麦</button><button class="btn soft" data-a="sparkT">${I.spark}抽一张灵感卡</button></div>${sp}`:'<p class="hint">这个话题已归档，可以听，不能再发布。</p>'}
+  <div class="eyebrow">${posts.length} 条播客</div>
+  <div class="plist">${posts.map(postCard).join('')||'<div class="empty">还没有人开麦。你来当第一个？</div>'}</div>`;
+}
+
+function respItem(r){
+  const s=stu(r.by);
+  const body=r.mode==='voice'?`<div class="mini"><button class="play" data-a="play" data-play="${r.id}" aria-label="播放语音回应">${I.play}${I.pause}</button>${waveHTML(r.id,16)}<span class="dur">${mmss(r.dur||10)}</span></div>${r.text?`<p style="color:var(--muted);font-size:13px">${esc(r.text)}</p>`:''}`:`<p>${esc(r.text)}</p>`;
+  return `<div class="resp">${av(r.by)}<div class="rb"><div class="rh"><b>${esc(s.nick)}</b><span class="tag ${r.tag}">${TAGNAME[r.tag]}</span><small>${esc(r.when)}</small><span style="flex:1"></span><button class="linkbtn muted" data-a="report" data-r="${r.id}">检举</button></div>${body}</div></div>`;
+}
+
+function postScreen(){
+  const p=D.posts.find(x=>x.id===S.post);if(!p||p.hidden){S.screen='home';return home()}
+  const s=stu(p.by);const t=topicOf(p.topic);const c=S.comp;const open=t.status==='live';
+  const resps=p.resp.filter(r=>!r.hidden);
+  let comp='';
+  if(open){
+    const voiceArea=c.recState==='idle'?`<button class="btn soft" data-a="cRec">${I.mic}按一下开始录（最多 30 秒）</button>`
+      :c.recState==='starting'?`<p class="hint">正在打开麦克风……如果浏览器问你，请按“允许”。</p>`
+      :c.recState==='rec'?`<div class="player" style="background:var(--ink);color:var(--paper)"><button class="play" data-a="cStop" style="background:var(--onair);color:var(--onair-ink)" aria-label="停止">${I.stop}</button><div class="live ${c.demo?'':'real'}" id="cBars" style="height:30px;flex:1;justify-content:center">${Array.from({length:14},(_,i)=>`<i style="animation-delay:${(i%7)*0.11}s"></i>`).join('')}</div><span class="dur" id="cTime" style="color:var(--paper)">0:${String(c.secs).padStart(2,'0')}</span></div>`
+      :c.recState==='saving'?`<p class="hint">正在处理录音……</p>`
+      :`${c.audioUrl?`<div class="mini"><button class="play" data-a="play" data-play="compdraft" aria-label="试听你的录音">${I.play}${I.pause}</button>${waveHTML('compdraft',16)}<span class="dur">${mmss(c.secs)}</span></div>`:''}
+        <button class="linkbtn muted" style="align-self:flex-start" data-a="cRedo">重录</button>
+        <label class="fl" for="cText">${c.demo?'语音转写（示范，可修改）':'文字稿（自动转写，可修改，也可以留空）'}</label><textarea id="cText">${esc(c.text)}</textarea>`;
+    comp=`<section class="composer" aria-label="回应">
+      <b style="font-size:14px">回应 ${esc(s.nick)}</b>
+      <div class="chips" role="group" aria-label="回应类型">${['agree','differ','ask'].map(k=>`<button class="chip ${k}" data-a="cTag" data-k="${k}" aria-pressed="${c.tag===k}">${PREFIX[k]}……</button>`).join('')}</div>
+      <div class="seg" role="group" aria-label="回应方式"><button data-a="cMode" data-m="voice" aria-pressed="${c.mode==='voice'}">${I.mic}语音</button><button data-a="cMode" data-m="text" aria-pressed="${c.mode==='text'}">${I.text}文字</button></div>
+      ${c.mode==='voice'?voiceArea:`<textarea id="cText" aria-label="文字回应">${esc(c.text)}</textarea>`}
+      <div class="actions"><button class="btn primary" data-a="cSend" ${c.mode==='voice'&&c.recState!=='done'?'disabled':''}>发送回应</button></div>
+    </section>`;
+  }
+  return `<header class="appbar"><button class="iconbtn" data-a="openTopic" data-t="${p.topic}" aria-label="返回">${I.back}</button><h1>${esc(t.title)}</h1></header>
+  <article class="post ${p.pinned?'pinned':''}">
+    <div class="phead">${av(p.by)}<div class="who"><b>${esc(s.nick)}</b><small>${esc(p.when)}</small></div>${p.pinned?'<span class="badge pin">老师推荐</span>':''}</div>
+    <div class="player"><button class="play" data-a="play" data-play="${p.id}" aria-label="播放">${I.play}${I.pause}</button>${waveHTML(p.id,36)}<span class="dur">${mmss(p.dur)}</span></div>
+    <div class="pfoot"><span class="l">${likeCtl(p)}</span></div>
+  </article>
+  <div class="eyebrow" style="display:flex;justify-content:space-between;align-items:center"><span>文字稿</span><button class="linkbtn muted" data-a="report" data-r="${p.id}">检举这条播客</button></div>
+  ${p.text?`<p class="transcript">${esc(p.text)}</p>`:'<p class="hint">这是原声播客，没有文字稿。按上面的播放键收听。</p>'}
+  <div class="eyebrow">${resps.length} 条回应</div>
+  <div>${resps.map(respItem).join('')||'<div class="empty">还没有回应。</div>'}</div>
+  <div style="height:12px"></div>${comp}`;
+}
+
+function recScreen(){
+  const r=S.rec;const live=D.topics.filter(t=>t.status==='live');
+  const bar=`<div class="stepper" aria-label="第 ${r.step} 步，共 3 步"><span class="${r.step>=1?'on':''}"></span><span class="${r.step>=2?'on':''}"></span><span class="${r.step>=3?'on':''}"></span></div>`;
+  const head=`<header class="appbar"><button class="iconbtn" data-a="recBack" aria-label="返回">${I.back}</button><h1>${['','准备一下','开麦中','听听你的原声'][r.step]}</h1><span class="dur">${r.step}/3</span></header>${bar}`;
+  if(r.step===1){
+    return head+`<div class="stack">
+    <div class="panel"><h3>${I.ear}今天想聊哪个话题？</h3><div class="topicpick" role="group">${live.map(t=>`<button data-a="recTopic" data-t="${t.id}" aria-pressed="${r.topic===t.id}">${esc(t.title)}</button>`).join('')}</div>
+      <button class="linkbtn" style="align-self:flex-start" data-a="openTopic" data-t="${r.topic}">先听听别人怎么说 →</button></div>
+    <div class="panel"><h3>${I.spark}不知道说什么？抽一张灵感卡</h3>
+      ${r.spark?`<div class="spark">${esc(r.spark)}</div>`:'<p class="hint">灵感卡不是题目，不用回答它，只是帮你想起一件事。</p>'}
+      <button class="btn soft sm" style="align-self:flex-start" data-a="sparkR">${r.spark?'换一张':'抽一张'}</button></div>
+    <div class="panel"><h3>${I.life}卡词救援</h3><p class="hint">想到英文，不知道中文怎么说？打出来就行。</p>
+      <div class="rescue"><input type="text" id="rq" placeholder="例如 peer pressure" value="${esc(r.rescueQ)}" autocomplete="off"><button class="btn primary sm" data-a="rescue">救援</button></div>
+      ${r.rescueA?`<div class="rescue-out" aria-live="polite">${r.rescueA}</div>`:''}</div>
+    <button class="btn primary" style="justify-content:center;padding:14px" data-a="recGo">${I.mic}准备好了，开麦</button>
+    <p class="hint" style="text-align:center">最长 90 秒。录完只有你自己听得到，满意了才发布。</p></div>`;
+  }
+  if(r.step===2){
+    const t=topicOf(r.topic);const on=r.status==='rec';const busy=r.status==='starting'||r.status==='saving';
+    const errBox=r.err?`<div class="errbox" role="alert">${r.err==='denied'
+        ?'<b>麦克风权限被拒绝了。</b>请在浏览器网址列旁边的设定里允许这个网站使用麦克风，再按一次红色按钮。'
+        :'<b>这里不能使用麦克风。</b>有些预览视窗不允许录音。请用网站版打开，或先改用示范录音体验整个流程。'}
+        <button class="btn soft sm" style="align-self:flex-start" data-a="recDemo">改用示范录音</button></div>`:'';
+    const msg=on?(r.mode==='demo'?'示范录音中，不会使用麦克风。':'说完就按停止。中间卡住也没关系，停一停再继续。')
+      :r.status==='starting'?'正在打开麦克风……如果浏览器问你，请按“允许”。'
+      :r.status==='saving'?'正在处理你的录音……'
+      :'按红色按钮开始录音。第一次会请你允许使用麦克风。';
+    return head+`<div class="stack"><div class="onairbox"><span class="onair">${on?'ON AIR · 录音中':'准备好就按红色按钮'}</span>
+      <p>${esc(t.title)}</p>
+      <div class="bigtime"><span id="recTime">${mmss(r.secs)}</span> <small>/ 1:30</small></div>
+      <div class="live ${on?(r.mode==='real'?'real':''):'idle'}" id="recBars">${Array.from({length:22},(_,i)=>`<i style="animation-delay:${((i*37)%10)/10}s"></i>`).join('')}</div>
+      <button class="recbtn ${on?'stop':''}" data-a="${on?'recStop':'recStart'}" aria-label="${on?'停止录音':'开始录音'}" ${busy?'disabled':''}>${on?I.stop:I.mic}</button>
+      <p>${msg}</p>
+      ${on&&r.mode==='real'&&hasSTT?`<div class="livecap"><small>即时字幕</small><span id="liveCap">……</span></div>`:''}</div>
+      ${errBox}
+      ${r.spark?`<div class="spark">灵感卡：${esc(r.spark)}</div>`:''}</div>`;
+  }
+  // step 3
+  const a=analyze(r.text);
+  const cjk=(r.text.match(/[一-鿿]/g)||[]).length;
+  const v=voiceFeedback(r);
+  return head+`<div class="stack">
+    <p class="private">${I.lock}只有你听得到、看得到这页。你决定要不要发布。</p>
+    <div class="panel"><h3>${I.ear}你的原声</h3>
+      ${r.audioUrl?`<div class="player"><button class="play" data-a="play" data-play="recdraft" aria-label="试听你的录音">${I.play}${I.pause}</button>${waveHTML('recdraft',36)}<span class="dur">${mmss(r.secs)}</span></div>
+      <p class="hint">发布后，同学听到的就是这段原声。</p>`
+      :'<p class="hint">示范模式：这次没有真实录音。用网站版并允许麦克风，就能录下你的声音。</p>'}</div>
+    <div class="panel"><h3>${I.text}文字稿</h3>
+      <p class="hint">${r.mode==='demo'?'示范模式以预设文字稿代替。':hasSTT?'由浏览器自动转写，可能有错字，可以修改。文字稿方便同学阅读，也能让 AI 回声给你反馈。':'你的浏览器不支持自动转写。可以打几句重点，或留空直接发布原声。'}</p>
+      <textarea id="recText" style="min-height:110px" placeholder="（可以留空）">${esc(r.text)}</textarea>
+      <button class="btn soft sm" style="align-self:flex-start" data-a="reEcho">更新 AI 回声</button></div>
+    <div class="echo" aria-live="polite">
+      <div class="eyebrow" style="margin:4px 0 0">AI 回声 · 只给你看的小建议</div>
+      ${v?`<div class="fb good"><h4>你的声音</h4><div class="wordrow"><span>录音长度</span><span>${mmss(r.secs)}</span></div><div class="wordrow"><span>说话时间占比</span><span>${v.ratio}%</span></div><div class="wordrow"><span>最长停顿</span><span>${v.longest} 秒</span></div></div>`:''}
+      ${(v?v.good:[]).concat(cjk>=5?a.good:[]).length?`<div class="fb good"><h4>你做得好的地方</h4><ul>${(v?v.good:[]).concat(cjk>=5?a.good:[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
+      ${(v?v.tries:[]).concat(cjk>=5?a.tries:[]).length?`<div class="fb try"><h4>下次可以试试</h4><ul>${(v?v.tries:[]).concat(cjk>=5?a.tries:[]).slice(0,4).map(x=>`<li>${x}</li>`).join('')}</ul></div>`:''}
+      ${cjk>=5?(a.words.length?`<div class="fb words"><h4>卡词救援：你用了这些英文，中文可以这样说</h4>${a.words.map(w=>`<div class="wordrow"><span>${esc(w[0])}</span><span>${w[1]?esc(w[1]):'原型词库未收录'}</span></div>`).join('')}</div>`:`<div class="fb good"><h4>全中文表达</h4>这一段没有夹英文，很棒。</div>`)
+        :`<div class="fb words"><h4>想要内容方面的建议？</h4>${r.mode==='demo'?'':'这台设备没有成功自动转写（Safari 和部分手机不支持，或需要联网）。'}在上面的文字稿里打几句你刚才说的重点，再按“更新 AI 回声”，就会看到立场、理由、例子和英文用词方面的建议。</div>`}
+    </div>
+    <div class="actions"><button class="btn primary" data-a="publish">发布到“${esc(topicOf(r.topic).title)}”</button><button class="btn soft" data-a="saveDraft">存草稿</button><button class="btn soft" data-a="reRec">重录</button></div>
+  </div>`;
+}
+
+function meScreen(){
+  const mine=D.posts.filter(p=>p.by===MYID);
+  const got=mine.reduce((n,p)=>n+p.resp.length,0);
+  const liked=mine.reduce((n,p)=>n+(p.likes||0),0);
+  return `<header class="appbar"><span class="logo">我的</span><span style="flex:1"></span><span class="classtag">${esc(stu(MYID).nick)}</span></header>
+  <div class="stats"><div class="stat"><b>${mine.length}</b><small>开麦次数</small></div><div class="stat"><b>${liked}</b><small>收到喜欢</small></div><div class="stat"><b>${got}</b><small>收到回应</small></div><div class="stat"><b>${D.words.length}</b><small>学会新词</small></div></div>
+  <div class="eyebrow">我的播客</div>
+  ${mine.length?`<div class="plist">${mine.map(postCard).join('')}</div>`:`<div class="empty">你还没开过麦。按中间的麦克风，说一分钟就好。</div>`}
+  ${D.drafts.length?`<div class="eyebrow">草稿 · 只有你看得到</div><div class="tlist">${D.drafts.map(d=>`<button class="tcard" data-a="openDraft" data-d="${d.id}"><span class="t"><b>${esc(topicOf(d.topic)?.title||'（话题已移除）')}</b><small>${d.text?esc(d.text.slice(0,28))+'……':'原声草稿'}</small></span></button>`).join('')}</div>`:''}
+  <div class="eyebrow">卡词救援学会的词</div>
+  ${D.words.length?`<div class="words">${D.words.map(w=>`<span title="${esc(w[0])}">${esc(w[1])}</span>`).join('')}</div>`:'<p class="hint">用过卡词救援或 AI 回声后，新词会收进这里。</p>'}
+  <div class="eyebrow">成长档案的样子（示范）</div>
+  <div class="panel"><p class="hint" style="font-size:13px">累积几次开麦后，这里会把你的第一条和最新一条放在一起，让你听见自己的变化。</p>
+    <div class="wordrow"><span>第 1 条 · 9月</span><span>28 秒 · 夹了 6 个英文词</span></div>
+    <div class="wordrow"><span>第 8 条 · 10月</span><span>74 秒 · 夹了 1 个英文词</span></div></div>`;
+}
+
+/* ---------- teacher ---------- */
+function modItems(){
+  const items=[];
+  D.posts.forEach(p=>{items.push({kind:'post',o:p,parent:null});p.resp.forEach(r=>items.push({kind:'resp',o:r,parent:p}))});
+  return items;
+}
+const TEACHER_PIN='1026';
+function teacherLogin(){
+  return `<div class="scroll"><header class="appbar"><span class="logo">开麦</span><h1 style="font-weight:500;color:var(--muted)">教师后台</h1></header>
+  <form class="login" id="loginForm">
+    <span class="lk">${I.lock}</span>
+    <h2>老师登入</h2>
+    <p class="hint">后台只限老师使用。学生账号无法进入。</p>
+    <label class="sr" for="pin">老师密码</label>
+    <input type="password" id="pin" inputmode="numeric" autocomplete="off" placeholder="••••" value="${esc(S.pin)}">
+    ${S.pinErr?'<p class="err" role="alert">密码不正确，请再试一次。</p>':''}
+    <button class="btn primary" style="justify-content:center" type="submit">登入</button>
+    <button class="linkbtn muted" type="button" data-a="toStudent">回到学生端</button>
+  </form></div>`;
+}
+function teacher(){
+  if(!S.teacherOK)return teacherLogin();
+  if(!LOADED)return loadingScreen();
+  if(S.proj)return projector();
+  const items=modItems();
+  const alerts=items.filter(i=>!i.o.hidden&&((i.o.reports||0)>0||i.o.aiflag)).length;
+  const asked=D.practices.filter(p=>!(p.comments||[]).length).length;
+  const tabs=[['class','上课'],['topics','话题管理'],['practice','学练'],['content','内容管控'],['people','参与概况']];
+  let body=S.tt==='class'?tClass():S.tt==='practice'?tPractice():S.tt==='topics'?tTopics():S.tt==='content'?tContent(items):tPeople();
+  return `<div class="scroll"><header class="appbar"><span class="logo">开麦</span><h1 style="font-weight:500;color:var(--muted)">教师后台 · 3E2 华文班</h1><button class="btn soft sm" data-a="logout">登出</button></header>
+  <div class="ttabs" role="tablist">${tabs.map(([k,n])=>`<button role="tab" aria-selected="${S.tt===k}" data-a="tt" data-k="${k}">${n}${k==='content'&&alerts?`<span class="count">${alerts}</span>`:''}${k==='class'&&sess()?'<span class="count" style="background:var(--ok)">上课中</span>':''}</button>`).join('')}</div>
+  ${body}</div>`;
+}
+function tTopics(){
+  const n=S.newT;
+  const stLabel={live:['live','进行中'],sched:['sched','已排定'],arch:['arch','已归档']};
+  return `<div class="tgrid two">
+  <section class="panel"><h3>新增话题</h3>
+    <div><label class="fl" for="ntTitle">话题</label><input type="text" id="ntTitle" placeholder="例如：品牌真的能代表一个人吗？" value="${esc(n.title)}"></div>
+    <div><label class="fl" for="ntDesc">一句引言</label><input type="text" id="ntDesc" placeholder="给学生一个切入点" value="${esc(n.desc)}"></div>
+    <div><label class="fl" for="ntSparks">灵感卡（一行一张）</label><textarea id="ntSparks" placeholder="想想你最喜欢的一件衣服，是因为牌子吗？">${esc(n.sparks)}</textarea></div>
+    <div class="radio" role="radiogroup" aria-label="上线方式"><label><input type="radio" name="ntMode" value="now" ${n.mode==='now'?'checked':''}> 立即上线</label><label><input type="radio" name="ntMode" value="date" ${n.mode==='date'?'checked':''}> 排定日期</label>${n.mode==='date'?`<input type="date" id="ntDate" value="${esc(n.date)}" style="width:auto">`:''}</div>
+    <button class="btn primary" style="align-self:flex-start" data-a="addTopic">新增话题</button>
+  </section>
+  <div class="stack">
+  <section class="panel"><h3>所有话题</h3>
+    <div>${D.topics.map(t=>`<div class="trow"><div class="tx"><b>${esc(t.title)}</b><small>${esc(t.when)} · ${D.posts.filter(p=>p.topic===t.id).length} 条播客</small></div><span class="st ${stLabel[t.status][0]}">${stLabel[t.status][1]}</span>
+      ${t.status==='arch'?`<button class="btn soft sm" data-a="tStatus" data-t="${t.id}" data-v="live">重新开放</button>`:t.status==='sched'?`<button class="btn soft sm" data-a="tStatus" data-t="${t.id}" data-v="live">现在上线</button>`:`<button class="btn soft sm" data-a="tStatus" data-t="${t.id}" data-v="arch">归档</button>`}</div>`).join('')}</div>
+  </section>
+  <section class="panel"><h3>学生提名</h3>
+    ${D.proposals.length?D.proposals.map(p=>`<div class="trow"><div class="tx"><b>${esc(p.title)}</b><small>${esc(stu(p.by).real)}（${esc(stu(p.by).nick)}）提名</small></div><button class="btn primary sm" data-a="adopt" data-p="${p.id}">采纳</button><button class="btn soft sm" data-a="decline" data-p="${p.id}">婉拒</button></div>`).join(''):'<p class="hint">目前没有新的提名。</p>'}
+  </section>
+  <section class="panel"><h3>还原示范数据</h3><p class="hint">清空所有播客、回应、话题和提名，换回示范内容。${CLOUD?'这会影响所有正在使用的设备。':''}</p>
+    ${S.confirm==='__reset'?'<div class="confirm">确定清空并还原？<button class="btn danger sm" data-a="doReset">还原</button><button class="btn soft sm" data-a="cancelDel">取消</button></div>':'<button class="btn soft sm" style="align-self:flex-start;color:var(--danger)" data-a="askReset">还原示范数据</button>'}
+  </section></div></div>`;
+}
+function tContent(items){
+  const f=S.filter;
+  const list=items.filter(i=>{const o=i.o;if(f==='rep')return (o.reports||0)>0&&!o.hidden;if(f==='ai')return o.aiflag&&!o.hidden;if(f==='hid')return o.hidden;return true});
+  const fl=[['all','全部'],['rep','学生检举'],['ai','AI 预警'],['hid','已隐藏']];
+  return `<p class="hint" style="margin-bottom:10px">先发后管：学生发布后立即公开。这里看得到真实姓名，学生之间只看到昵称。</p>
+  <div class="chips" role="group" aria-label="筛选" style="margin-bottom:12px">${fl.map(([k,n])=>`<button class="chip plain" data-a="filter" data-k="${k}" aria-pressed="${f===k}">${n}</button>`).join('')}</div>
+  <div class="stack">${list.map(i=>modCard(i)).join('')||'<div class="empty">这里没有需要处理的内容。</div>'}</div>`;
+}
+function modCard(i){
+  const o=i.o,s=stu(o.by),isPost=i.kind==='post';
+  const topic=topicOf(isPost?o.topic:i.parent.topic)||{title:'（话题已移除）'};
+  const flags=[(o.reports||0)>0?`<span class="flag">学生检举 ×${o.reports}</span>`:'',o.aiflag?`<span class="flag ai">AI 预警：${esc(o.aiflag)}</span>`:'',o.hidden?'<span class="flag h">已隐藏</span>':'',o.pinned?'<span class="badge pin">置顶中</span>':''].join('');
+  const conf=S.confirm===o.id?`<div class="confirm">删除后无法恢复。确定删除？<button class="btn danger sm" data-a="del" data-id="${o.id}">删除</button><button class="btn soft sm" data-a="cancelDel">取消</button></div>`:'';
+  return `<div class="mod ${o.hidden?'hid':''}">
+    <div class="mh">${av(o.by)}<b>${esc(s.real)}</b><small>（${esc(s.nick)}）</small><small>· ${isPost?'播客':'回应 · '+TAGNAME[o.tag]} · ${esc(topic.title)} · ${esc(o.when)}</small></div>
+    ${flags?`<div class="mh">${flags}</div>`:''}
+    ${(o.audioUrl||o.audioId)?`<div class="mini"><button class="play" data-a="play" data-play="${o.id}" aria-label="收听原声">${I.play}${I.pause}</button>${waveHTML(o.id,16)}<span class="dur">${mmss(o.dur||1)}</span></div>`:''}
+    ${o.text?`<p>${esc(o.text)}</p>`:'<p class="hint">（原声，没有文字稿）</p>'}
+    <div class="actions">${isPost?`<button class="btn soft sm" data-a="pin" data-id="${o.id}">${o.pinned?'取消置顶':'置顶'}</button>`:''}
+      <button class="btn soft sm" data-a="hide" data-id="${o.id}">${o.hidden?'恢复显示':'隐藏'}</button>
+      ${(o.reports||o.aiflag)&&!o.hidden?`<button class="btn soft sm" data-a="clear" data-id="${o.id}">没问题，保留</button>`:''}
+      <button class="btn soft sm" data-a="askDel" data-id="${o.id}" style="color:var(--danger)">删除</button></div>
+    ${conf}</div>`;
+}
+function tPeople(){
+  const rows=D.students.map(s=>{const posts=D.posts.filter(p=>p.by===s.id);const resp=D.posts.reduce((n,p)=>n+p.resp.filter(r=>r.by===s.id).length,0);return {s,posts:posts.length,resp,last:(posts[0]?.when)||'—'}});
+  const spoke=rows.filter(r=>r.posts>0).length;const quiet=rows.filter(r=>r.posts===0);
+  return `<div class="sumrow"><div class="stat"><b>${spoke}/${rows.length}</b><small>已经开麦</small></div><div class="stat"><b>${D.posts.length}</b><small>播客总数</small></div><div class="stat"><b>${D.posts.reduce((n,p)=>n+p.resp.length,0)}</b><small>回应总数</small></div></div>
+  ${quiet.length?`<p class="hint" style="margin-bottom:10px">还没开麦的同学：${quiet.map(r=>esc(r.s.real)).join('、')}。可以私下鼓励，或先邀请他们用文字回应。</p>`:''}
+  <div class="tablewrap"><table><thead><tr><th>学生</th><th>昵称</th><th>开麦</th><th>回应</th><th>状态</th></tr></thead>
+  <tbody>${rows.map(r=>`<tr><td>${esc(r.s.real)}</td><td>${esc(r.s.nick)}</td><td class="n">${r.posts}</td><td class="n">${r.resp}</td><td>${r.posts===0?'<span class="quiet">未开麦</span>':'—'}</td></tr>`).join('')}</tbody></table></div>
+  <p class="privnote">${I.lock}此页只有老师看得到，学生之间看不到彼此的参与数据。</p>`;
+}
+
+/* ===================== 引 · 学 · 练（课堂同步） ===================== */
+const STAGES=[['feel','第一感觉'],['spectrum','立场光谱'],['wall','观点墙'],['learn','学：比一比'],['practice','练习'],['respectrum','再标一次立场'],['end','下课']];
+const stageName=k=>(STAGES.find(s=>s[0]===k)||['',''])[1];
+const FEELS=[['😄','有兴趣'],['🤔','想不通'],['😐','没感觉'],['😟','有点担心'],['😠','不认同']];
+const SCAF=[
+ {k:'stand',n:'立',t:'表明立场',hint:'开头就说清楚你同意还是不同意。',st:['我同意……','我不同意……','我认为……'],c:'var(--accent)',bg:'var(--accent-soft)'},
+ {k:'reason',n:'理',t:'说出理由',hint:'说一个支持你立场的理由。',st:['因为……','原因是……'],c:'var(--agree)',bg:'var(--agree-soft)'},
+ {k:'example',n:'例',t:'举出例子',hint:'用自己、身边的人或社会上的具体例子支持理由。',st:['比如……','我有一次……','我身边有一个朋友……'],c:'var(--ask)',bg:'var(--ask-soft)'},
+ {k:'counter',n:'驳',t:'回应不同看法',hint:'想一想别人可能怎么反对你，再说出你的回应。',st:['也许有人会说……，但是我认为……','虽然……，可是……'],c:'var(--differ)',bg:'var(--differ-soft)'},
+ {k:'close',n:'结',t:'总结或呼吁',hint:'回到你的立场，或请大家做一件事。',st:['所以……','总的来说……','我希望大家……'],c:'var(--danger)',bg:'var(--danger-soft)'}
+];
+const CRIT=[...SCAF.map(s=>({k:s.k,n:s.n,t:s.t,c:s.c})),{k:'lang',n:'语',t:'语言表达',c:'var(--ink)'},{k:'flow',n:'顺',t:'流畅自然',c:'var(--muted)'}];
+const RUBRIC={
+ stand:['没有表明立场','有立场，但不够明确，或太晚才说','一开头就清楚说出同意或不同意'],
+ reason:['只有立场，没有理由','有理由，但比较含糊','说出清楚的理由，并且和立场有关'],
+ example:['没有举例子','例子比较笼统（像“很多人都这样”）','用具体的人或事支持理由'],
+ counter:['没有提到不同的看法','提到不同的看法，但没有回应','说出不同的看法，并且有力地回应'],
+ close:['没有结尾，突然结束','有结尾，但只是重复，或比较仓促','用一两句收尾，回到立场或提出呼吁'],
+ lang:['常常夹英文（4 个以上）','偶尔夹英文（2–3 个）','用中文表达，几乎不夹英文'],
+ flow:['停顿很多，或太短','有几次明显的停顿','说话自然，长度足够，停顿少']
+};
+const TIPS={
+ stand:['开头第一句就说“我同意……”或“我不同意……”。','把立场放在最前面，听众一开始就知道你站在哪一边。'],
+ reason:['在立场后面加一句“因为……”。','把理由说得更具体：为什么会这样？'],
+ example:['加一个具体的例子：“比如我有一次……”。','把“很多人”换成一个具体的人或一件具体的事。'],
+ counter:['试试说：“也许有人会说……，但是我认为……”。','提到不同看法之后，记得用“但是……”回应它。'],
+ close:['最后用“所以……”或“我希望大家……”收尾。','结尾可以回到你的立场，或请听众做一件事。'],
+ lang:['把英文词换成中文，可以先用卡词救援查一查。','只剩少数英文词，试试全部用中文说。'],
+ flow:['说之前先想好第一句话；卡住时可以说“我想想……”。','再顺一点：少用“然后”“就是”，停一秒再说。']
+};
+const LVL=['还没做到','部分做到','已做到'];
+const LVNAME={easy:'容易',normal:'普通',hard:'挑战'};
+const QUICK=['你的立场很清楚！','例子很具体，很有说服力。','试试加一个自己的例子。','下次试着回应不同的看法。','结尾可以再回到你的立场。','中文表达进步了！'];
+const EXAMPLES={
+ t1:{good:['我不同意花很多钱买盲盒。','因为盲盒的设计就是利用我们想“再抽一次”的心理，让人很难停下来，最后花的钱远远超过原本的预算。','比如我表哥为了抽到一个隐藏款，两个月买了二十多个，花了差不多三百块，最后还是没有抽到。','也许有人会说，拆开的那一刻很快乐，买盲盒是在奖励自己。但是我认为，这种快乐只有几秒钟，花掉的钱却是真的。','所以，我希望大家买盲盒之前先想一想：我买的是喜欢的东西，还是停不下来的冲动？'],
+  plain:'嗯，盲盒……我觉得还好吧。就是很多人都在买，然后有的人觉得很好玩，有的人觉得浪费钱。我自己是觉得看情况啦，喜欢就买，不喜欢就不要买。然后……就这样。',
+  note:'示例 A 只说了“还好”“看情况”，没有清楚的立场、理由、具体例子和结尾。',
+  wall:['盲盒其实是在赌运气，我觉得不值得。','偶尔买一个奖励自己，没什么问题。','我朋友买了很多，可是好像越买越不开心。','重点是量力而为，不要借钱买。','拆开的那一刻真的很开心！','商家利用了我们的好奇心。','如果是自己存的钱，就可以自己决定。','我比较喜欢直接买想要的，不想碰运气。','跟风买的东西，过几天就不喜欢了。','收集也是一种爱好，不一定是浪费。']},
+ t2:{good:['我认为合群很重要，但是合群不等于跟别人一模一样。','因为真正的合群是能和大家合作、互相尊重，而不是放弃自己的想法。','比如在我的 CCA 里，我们排练的时候意见常常不一样，可是大家说出来、一起讨论，最后的表演反而更好。','也许有人会说，不跟别人一样就会被排挤。但是我觉得，如果一个圈子要你放弃自己才能留下，那可能不是适合你的朋友。','所以，我希望大家在合群的同时，也勇敢地做自己。'],
+  plain:'合群……嗯，我觉得很重要啊，因为大家都要合群。然后如果你不合群，别人就会觉得你很奇怪。所以要合群。就是这样。',
+  note:'示例 A 的理由只是重复“要合群”，没有具体例子，也没有回应不同的看法。',
+  wall:['合群是为了合作，不是为了一样。','不合群会很孤单，我还是想合群。','真正的朋友会接受我说不。','有时候为了合群，我会假装喜欢。','合群很重要，可是不能失去自己。','我宁愿有少数几个真正的朋友。','在 CCA 里合群真的很重要。','大家都一样，反而很无聊。','我怕被排挤，所以会跟着大家。','做自己也可以交到朋友。']}
+};
+const exOf=tid=>EXAMPLES[tid]||EXAMPLES.t1;
+const posLabel=v=>v<20?'非常不同意':v<40?'不同意':v<=60?'中立':v<=80?'同意':'非常同意';
+let SEEN=ls.get('kaimai_seen_cm',{});
+
+/* ---------- AI rubric (rule-based prototype) ---------- */
+function enWords(t){return (t.match(/[A-Za-z]{2,}/g)||[]).filter(w=>!/^(cca|ok)$/i.test(w))}
+function posOf(t,re){const m=t.search(re);return m<0?-1:m/Math.max(1,t.length)}
+function evalCrit(k,t,seg){
+  t=(t||'').trim();if((t.match(/[一-鿿]/g)||[]).length<3)return null;
+  switch(k){
+   case 'stand':{const p=posOf(t,/不同意|同意|我认为|我觉得|我支持|我反对|赞成|反对|我的看法/);if(p<0)return /看情况|还好|都可以/.test(t)?1:0;if(/看情况|还好吧|都可以/.test(t))return 1;return seg||p<=0.35?2:1}
+   case 'reason':{const m=t.match(/(因为|原因是|由于|之所以)([^。！？，,.!?]*)/);if(!m)return 0;return (m[2].match(/[一-鿿]/g)||[]).length>=8?2:1}
+   case 'example':{if(/比如|例如|举个例子|譬如|有一次|上个月|去年|上次|昨天|我表哥|我表姐|我朋友|我同学|我妈|我爸|我哥|我姐|我弟|我妹|我身边/.test(t))return 2;if(/很多人|有的人|有些人|大家都|别人都/.test(t))return 1;return 0}
+   case 'counter':{const p=t.search(/也许有人|有人会说|有人认为|有人觉得|有些人认为|有些人觉得|有些人会说|别人可能|虽然/);if(p<0)return 0;return /但是|可是|不过|然而|但/.test(t.slice(p+2))?2:1}
+   case 'close':{const p=posOf(t,/所以|总之|总的来说|总而言之|我希望|我呼吁|让我们|大家应该|我建议|希望大家/);if(p<0)return 0;if(seg)return 2;return p>=0.6?2:1}
+   case 'lang':{const n=enWords(t).length;return n<=1?2:n<=3?1:0}
+  }
+  return null;
+}
+function evalFlow(stats,secs,seg){
+  if(!stats||!stats.total)return null;
+  const ratio=stats.voiced/stats.total,longest=stats.longest/1000;
+  if(seg)return secs>=6&&longest<3&&ratio>=0.4?2:secs>=3?1:0;
+  return secs>=45&&longest<3&&ratio>=0.5?2:secs>=25&&longest<5?1:0;
+}
+function aiFull(text,stats,secs){const o={};SCAF.forEach(s=>o[s.k]=evalCrit(s.k,text,false));o.lang=evalCrit('lang',text);o.flow=evalFlow(stats,secs,false);return o}
+function combineSeg(segs){
+  const o={};SCAF.forEach((s,i)=>{o[s.k]=segs[i]&&segs[i].ai&&segs[i].ai[s.k]!=null?segs[i].ai[s.k]:null});
+  o.lang=evalCrit('lang',segs.map(g=>(g&&g.text)||'').join('。'));
+  const f=segs.map(g=>g&&g.ai?g.ai.flow:null).filter(v=>v!=null);o.flow=f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length):null;
+  return o;
+}
+function rubricNext(ai){const out=[];if(!ai)return out;[0,1].forEach(l=>CRIT.forEach(c=>{if(ai[c.k]===l&&out.length<3)out.push(TIPS[c.k][l])}));return out}
+function critRow(k,v){const c=CRIT.find(x=>x.k===k);const n=v==null;return `<div class="rubrow"><span class="stepchip" style="background:${c.c}">${c.n}</span><span class="rt"><b>${c.t}</b><small>${n?(k==='flow'?'需要录音才能评':'需要文字稿才能评'):RUBRIC[k][v]}</small></span><span class="rpill ${n?'ln':'l'+v}">${n?'未评':LVL[v]}</span></div>`}
+function rubricTable(ai){return `<div class="rub">${CRIT.map(c=>critRow(c.k,ai?ai[c.k]:null)).join('')}</div>`}
+function rubricPills(ai){return CRIT.map(c=>{const v=ai?ai[c.k]:null;return `<span class="rp ${v==null?'ln':'l'+v}" title="${c.t}：${v==null?'未评':LVL[v]}">${c.n}</span>`}).join('')}
+function nextTips(ai){
+  const t=rubricNext(ai);if(t.length)return `<div class="fb try"><h4>下一步可以试试</h4><ul>${t.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  if(!ai||CRIT.every(c=>ai[c.k]==null))return '';
+  return `<div class="fb good"><h4>做得很好</h4>评到的每一项都做到了。试试更高的难度吧！</div>`;
+}
+function rubricRef(){return `<details class="panel" style="margin-top:12px"><summary style="font-weight:700;cursor:pointer">查看 rubric（立、理、例、驳、结 + 语言、流畅）</summary><div class="tablewrap" style="margin-top:10px"><table><thead><tr><th>项目</th><th>还没做到</th><th>部分做到</th><th>已做到</th></tr></thead><tbody>${CRIT.map(c=>`<tr><td><b>${c.n}</b> ${c.t}</td>${RUBRIC[c.k].map(x=>`<td>${x}</td>`).join('')}</tr>`).join('')}</tbody></table></div></details>`}
+
+/* ---------- session helpers ---------- */
+function sess(){const s=D.session;return s&&s.active?Object.assign({},s,{id:s.sid}):null}
+function sessChecks(){const s=sess();return s?D.checkins.filter(c=>c.session===s.id):[]}
+function myCheck(){const s=sess();return s?D.checkins.find(c=>c.id===s.id+'_'+MYID)||null:null}
+function checkin(fields){const s=sess();if(!s||!MYID)return Promise.resolve();return api.upsert('checkins',s.id+'_'+MYID,Object.assign({session:s.id,by:MYID},fields))}
+function getVote(tid){const s=sess();if(s&&s.topic===tid){const c=myCheck();if(c&&c.vote)return c.vote}return S.votes[tid]||null}
+function latestPerStudent(list){const m={};list.forEach(p=>{const t=p.updatedAt||p.createdAt||0;if(!m[p.by]||t>(m[p.by].updatedAt||m[p.by].createdAt||0))m[p.by]=p});return Object.values(m)}
+function aiSummary(prs){const out=[];CRIT.forEach(c=>{const who=prs.filter(p=>p.ai&&p.ai[c.k]===0);if(who.length)out.push({c,n:who.length,names:who.map(p=>stu(p.by).real)})});return out.sort((a,b)=>b.n-a.n)}
+function sessionWatch(){
+  const s=sess();const key=s?s.id+':'+s.stage:'';
+  if(key===S.sessKey)return;
+  const first=S.sessKey===undefined;S.sessKey=key;
+  if(!s){S.proj=S.proj&&S.view==='teacher';return}
+  S.slider=null;S.wallDraft=null;
+  if(S.view!=='student'||!MYID)return;
+  if(!['rec','practice','post','mypr'].includes(S.screen)){S.screen='class';if(!first)setTimeout(()=>toast('老师进入了：'+stageName(s.stage)),0)}
+  else if(!first)setTimeout(()=>toast('老师进入了：'+stageName(s.stage)+'，按“课堂”跟上'),0);
+}
+
+/* ---------- shared pieces ---------- */
+function feelBars(ch,teacher){
+  const g=FEELS.map((f,i)=>ch.filter(c=>c.feel===i));const max=Math.max(1,...g.map(x=>x.length));
+  return `<div class="bars">${FEELS.map((f,i)=>`<div class="barrow"><span class="em" title="${f[1]}">${f[0]}</span><div class="bartrack"><div class="bar" style="width:${g[i].length/max*100}%"></div></div><b class="n">${g[i].length}</b>${teacher&&g[i].length?`<small class="names">${g[i].map(c=>esc(stu(c.by).real)).join('、')}</small>`:''}</div>`).join('')}</div>
+  <p class="hint">${FEELS.map(f=>f[0]+' '+f[1]).join('　')}</p>`;
+}
+function posTrack(ch,key,teacher,showBefore){
+  const dots=ch.filter(c=>c[key]!=null);
+  const before=showBefore?ch.filter(c=>c.pos!=null).map(c=>`<i class="dot before" style="left:${c.pos}%"></i>`).join(''):'';
+  const d=dots.map(c=>{const u=stu(c.by);return teacher
+    ?`<button class="dot ${S.spot===c.id?'spot':''}" style="left:${c[key]}%" data-a="spot" data-id="${c.id}" title="${esc(u.real)}（${esc(u.nick)}）" aria-label="${esc(u.real)}"></button>`
+    :`<i class="dot ${c.by===MYID&&S.view==='student'?'me':''}" style="left:${c[key]}%"></i>`}).join('');
+  const sp=teacher&&S.spot?dots.find(c=>c.id===S.spot):null;
+  const avg=dots.length?Math.round(dots.reduce((a,c)=>a+c[key],0)/dots.length):null;
+  return `<div class="track">${before}${d}${sp?`<span class="spotlab" style="left:${sp[key]}%">${esc(stu(sp.by).real)}</span>`:''}</div>
+  <div class="tracklabels"><span>非常不同意</span><span>中立</span><span>非常同意</span></div>
+  <p class="hint">${dots.length} 人已标记${avg!=null?` · 全班平均：${posLabel(avg)}`:''}${teacher&&dots.length?' · 点圆点可以看到是谁':''}</p>`;
+}
+function wallCards(teacher){
+  const ch=sessChecks().filter(c=>c.text&&(teacher||!c.wallHidden)).sort((a,b)=>(a.wallAt||0)-(b.wallAt||0));
+  if(!ch.length)return '<div class="empty" style="grid-column:1/-1">还没有人贴观点。</div>';
+  return ch.map((c,i)=>`<div class="wallcard w${i%3} ${c.wallHidden?'hid':''}"><p>${esc(c.text)}</p>${teacher?`<div class="wallfoot"><small>${esc(stu(c.by).real)}</small><button class="linkbtn muted" data-a="wallHide" data-id="${c.id}">${c.wallHidden?'恢复':'隐藏'}</button></div>`:''}</div>`).join('');
+}
+function voteBars(ch){
+  const A=ch.filter(c=>c.vote==='A').length,B=ch.filter(c=>c.vote==='B').length,max=Math.max(1,A,B);
+  return `<div class="bars">${[['A',A],['B',B]].map(([k,n])=>`<div class="barrow"><span class="em" style="font-size:15px;font-weight:900">示例 ${k}</span><div class="bartrack"><div class="bar" style="width:${n/max*100}%"></div></div><b class="n">${n}</b></div>`).join('')}</div>`;
+}
+function annotated(tid){
+  const ex=exOf(tid);
+  return `${ex.good.map((g,i)=>`<button class="exseg" style="border-color:${SCAF[i].c};background:${SCAF[i].bg}" data-a="play" data-play="ex:${tid}:G${i}"><span class="stepchip" style="background:${SCAF[i].c}">${SCAF[i].n}</span><span><b>${SCAF[i].t}</b>${esc(g)}</span></button>`).join('')}<p class="hint">${esc(ex.note)}</p>`;
+}
+function learnBlock(tid){
+  const ex=exOf(tid),fb=!EXAMPLES[tid],vote=getVote(tid),rev=!!S.reveal[tid];
+  const card=(lab,id,text)=>`<div class="excard"><div class="exhead"><b>示例 ${lab}</b><button class="play sm" data-a="play" data-play="${id}" aria-label="播放示例 ${lab}">${I.play}${I.pause}</button></div><p>${esc(text)}</p></div>`;
+  return `<div class="panel"><h3>${I.ear}比一比：哪一个更有说服力？</h3>
+    ${fb?'<p class="hint">这个话题还没有专属示例，先用“盲盒值不值得买？”的示例学习结构。</p>':''}
+    <div class="exgrid">${card('A',`ex:${tid}:A`,ex.plain)}${card('B',`ex:${tid}:B`,ex.good.join(''))}</div>
+    <div class="chips" role="group" aria-label="投票">${['A','B'].map(x=>`<button class="chip plain" data-a="vote" data-t="${tid}" data-v="${x}" aria-pressed="${vote===x}">示例 ${x} 更有说服力</button>`).join('')}</div>
+    ${vote?`<button class="btn soft sm" style="align-self:flex-start" data-a="reveal" data-t="${tid}">${rev?'收起':'看看示例 B 好在哪里'}</button>`:'<p class="hint">先投票，再看答案。</p>'}
+  </div>
+  ${rev?`<div class="panel"><h3>好的发言有五步：立、理、例、驳、结</h3><p class="hint">点任何一段，就能听那一段。</p>${annotated(tid)}</div>`:''}
+  ${exemplarsHTML(tid)}`;
+}
+function exemplarsHTML(tid){
+  const list=D.practices.filter(p=>['named','anon'].includes(p.share)&&p.topic===tid);
+  if(!list.length)return '';
+  return `<div class="panel"><h3>同学的好示例</h3><p class="hint">老师选出、同学同意公开的练习。</p>${list.map(p=>`<div class="exmp"><div class="mh"><b>${p.share==='anon'?'匿名同学':esc(stu(p.by).nick)}</b><small>${p.mode==='seg'?'分段练习':'完整播客'} · ${LVNAME[p.level]||''}</small><span class="rpills">${rubricPills(p.ai)}</span></div>${prRecordings(p)}</div>`).join('')}</div>`;
+}
+function practiceLauncher(tid){
+  const L=[['easy','容易','每一步都有说明和句头'],['normal','普通','只显示步骤名称'],['hard','挑战','完全自由说']];
+  return `<div class="panel"><h3>${I.mic}开始练习</h3><p class="hint">练习只有你和老师看得到。先选难度：</p>
+    <div class="lvlcards" role="group" aria-label="难度">${L.map(l=>`<button class="lvlcard" data-a="lvl" data-v="${l[0]}" aria-pressed="${S.lvl===l[0]}"><b>${l[1]}</b><small>${l[2]}</small></button>`).join('')}</div>
+    <div class="actions"><button class="btn primary" data-a="prStart" data-m="seg" data-t="${tid}">分段练习</button><button class="btn onair-b" data-a="prStart" data-m="full" data-t="${tid}">练习说完整播客</button></div>
+    <p class="hint">分段练习：五步分开录，哪一步不满意就只重录那一步。完整播客：一口气说 60–90 秒。</p></div>`;
+}
+function prRecordings(p){
+  if(p.mode==='seg')return (p.segments||[]).map((g,i)=>g&&g.done?`<div class="segline"><span class="stepchip" style="background:${SCAF[i].c}">${SCAF[i].n}</span><button class="play sm" data-a="play" data-play="pr:${p.id}:${i}" aria-label="播放第 ${i+1} 段">${I.play}${I.pause}</button><span class="segtext">${g.text?esc(g.text):'（原声，没有文字稿）'}</span></div>`:'').join('')||'<p class="hint">还没有录音。</p>';
+  return `<div class="player"><button class="play" data-a="play" data-play="pr:${p.id}" aria-label="播放练习">${I.play}${I.pause}</button>${waveHTML('pr:'+p.id,30)}<span class="dur">${mmss(p.dur||0)}</span></div>${p.text?`<p class="transcript" style="margin:0;font-size:14px">${esc(p.text)}</p>`:''}`;
+}
+function prBody(p){
+  return `<div class="panel"><h3>${esc(topicOf(p.topic)?.title||'（话题已移除）')}</h3><p class="hint">${p.mode==='seg'?'分段练习':'完整播客'} · ${LVNAME[p.level]||''} · ${esc(p.when||'')}</p>${prRecordings(p)}</div>
+  <div class="panel"><h3>AI 按 rubric 的反馈</h3>${rubricTable(p.ai)}${nextTips(p.ai)}</div>`;
+}
+
+/* ---------- playback ids for examples and practices ---------- */
+function findExtra(id){
+  const a=id.split(':');
+  if(a[0]==='ex'){const ex=exOf(a[1]);if(a[2]==='A')return {text:ex.plain};if(a[2]==='B')return {text:ex.good.join('')};return {text:ex.good[+a[2].slice(1)]||''}}
+  if(a[0]==='prd'){const g=S.pr&&S.pr.segs[+a[1]];return g?{text:g.text||'',audioUrl:g.audioUrl,audioId:g.audioId,audioParts:g.audioParts,dur:g.secs}:null}
+  if(a[0]==='pr'){const p=D.practices.find(x=>x.id===a[1]);if(!p)return null;
+    if(a[2]===undefined)return {text:p.text||'',audioId:p.audioId,audioParts:p.audioParts,audioUrl:p.audioUrl,dur:p.dur};
+    const g=(p.segments||[])[+a[2]];return g?{text:g.text||'',audioId:g.audioId,audioParts:g.audioParts,audioUrl:g.audioUrl,dur:g.dur}:null}
+  return null;
+}
+
+/* ---------- student screens ---------- */
+function classBanner(){
+  const s=sess();if(!s)return '';const t=topicOf(s.topic);
+  return `<button class="banner" data-a="nav" data-s="class"><span class="onair" style="background:var(--ink);color:var(--onair)">上课中</span><span class="t"><b>${esc(t?t.title:'')}</b><small>现在：${esc(stageName(s.stage))}</small></span><span>进入课堂 →</span></button>`;
+}
+function classScreen(){
+  const s=sess();
+  const head=`<header class="appbar"><span class="logo">课堂</span><span style="flex:1"></span>${s?`<span class="classtag">${esc(stageName(s.stage))}</span>`:''}</header>`;
+  if(!s)return head+`<div class="empty">老师还没有开始上课。<br>上课时，这里会跟着老师的步骤走。</div><div style="height:12px"></div><button class="btn primary" data-a="nav" data-s="learn">先自己去学练</button>`;
+  const t=topicOf(s.topic)||{title:'（话题已移除）'};const me=myCheck()||{};
+  let body='';
+  switch(s.stage){
+   case 'feel':body=`<div class="panel"><h3>看到这个话题，你的第一感觉是？</h3><div class="feelrow" role="group">${FEELS.map((f,i)=>`<button class="feelbtn" data-a="cFeel" data-i="${i}" aria-pressed="${me.feel===i}"><span>${f[0]}</span>${f[1]}</button>`).join('')}</div>${me.feel!=null?'<p class="hint">已送出，想改可以再按一次。</p>':''}</div>`;break;
+   case 'spectrum':case 'respectrum':{
+     const k=s.stage==='spectrum'?'pos':'pos2';const v=S.slider!=null?S.slider:(me[k]!=null?me[k]:(me.pos!=null?me.pos:50));
+     body=`<div class="panel"><h3>${k==='pos'?'你同意吗？你的立场在哪里？':'上完课，你现在的立场在哪里？'}</h3><p class="hint">把圆点拉到最接近你的位置，再按送出。大屏上不会显示你的名字。</p>
+       <input type="range" id="cSlider" min="0" max="100" value="${v}" aria-label="立场">
+       <div class="tracklabels"><span>非常不同意</span><span>中立</span><span>非常同意</span></div>
+       <p class="hint" id="cSliderLab">你选的是：${posLabel(v)}${k==='pos2'&&me.pos!=null?`（上课一开始：${posLabel(me.pos)}）`:''}</p>
+       <button class="btn primary" style="align-self:flex-start" data-a="cPos" data-k="${k}">${me[k]!=null?'更新':'送出'}</button>${me[k]!=null?`<p class="hint">已送出：${posLabel(me[k])}</p>`:''}</div>
+       <div class="eyebrow">全班（匿名）</div><div class="panel">${posTrack(sessChecks(),k,false,k==='pos2')}</div>`;break}
+   case 'wall':body=`<div class="panel"><h3>用一句话说说你的看法</h3><textarea id="cWall" maxlength="80" placeholder="我这样想，因为……">${esc(S.wallDraft!=null?S.wallDraft:(me.text||''))}</textarea><button class="btn primary" style="align-self:flex-start" data-a="cWallSend">${me.text?'更新':'贴上观点墙'}</button></div>
+     <div class="eyebrow">观点墙（匿名）</div><div class="wallgrid">${wallCards(false)}</div>`;break;
+   case 'learn':body=`<div class="stack">${learnBlock(s.topic)}</div>`;break;
+   case 'practice':body=`<p class="hint" style="margin:0 0 10px">老师请大家开始练习。练习只有你和老师看得到。</p>${practiceLauncher(s.topic)}`;break;
+   case 'end':body=`<div class="panel"><h3>这节课结束了！</h3><p class="hint">课后用你练习过的“立、理、例、驳、结”，在开麦社群发布一条播客吧。</p><button class="btn primary" style="align-self:flex-start" data-a="startRec" data-t="${s.topic}">${I.mic}去开麦</button></div>`;break;
+  }
+  return head+`<div class="feature" style="padding:14px 16px;gap:6px"><span class="onair">上课中 · ${esc(stageName(s.stage))}</span><h2 style="font-size:26px">${esc(t.title)}</h2></div><div style="height:12px"></div>`+body;
+}
+function learnScreen(){
+  const live=D.topics.filter(t=>t.status==='live');
+  if(!S.lt||!topicOf(S.lt))S.lt=(sess()&&sess().topic)||(live[0]&&live[0].id)||null;
+  const mine=D.practices.filter(p=>p.by===MYID);
+  return `<header class="appbar"><span class="logo">学练</span><span style="flex:1"></span><span class="classtag">练习只有你和老师看得到</span></header>
+  <div class="chips" role="group" aria-label="话题" style="margin-bottom:12px">${live.map(t=>`<button class="chip plain" data-a="lt" data-t="${t.id}" aria-pressed="${S.lt===t.id}">${esc(t.title)}</button>`).join('')}</div>
+  <div class="stack">${S.lt?learnBlock(S.lt)+practiceLauncher(S.lt):'<div class="empty">目前没有开放的话题。</div>'}</div>
+  <div class="eyebrow">我的练习</div>
+  ${mine.length?`<div class="tlist">${mine.map(myPrCard).join('')}</div>`:'<p class="hint">还没有练习记录。</p>'}`;
+}
+function myPrCard(p){
+  const newCm=(p.comments||[]).length>(SEEN[p.id]||0);
+  return `<button class="tcard" data-a="openPr" data-p="${p.id}"><span class="t"><b>${esc(topicOf(p.topic)?.title||'（话题已移除）')}</b><small>${p.mode==='seg'?'分段练习 '+(p.done||0)+'/5':'完整播客'} · ${LVNAME[p.level]||''} · ${esc(p.when)}</small><span class="rpills">${rubricPills(p.ai)}</span></span>${p.share==='asked'?'<span class="badge pin">老师邀请</span>':newCm?'<span class="badge pin">老师评语</span>':''}</button>`;
+}
+function myPrScreen(){
+  const p=D.practices.find(x=>x.id===S.prView);if(!p){S.screen='learn';return learnScreen()}
+  if((p.comments||[]).length!==(SEEN[p.id]||0)){SEEN[p.id]=(p.comments||[]).length;ls.set('kaimai_seen_cm',SEEN)}
+  return `<header class="appbar"><button class="iconbtn" data-a="nav" data-s="learn" aria-label="返回">${I.back}</button><h1>我的练习</h1></header>
+  <div class="stack">
+  ${p.share==='asked'?`<div class="panel" style="border-color:var(--onair);box-shadow:inset 0 0 0 1px var(--onair)"><h3>老师想把你的练习作为示例</h3><p class="hint">发布后，全班都能在“学练”里听到这段练习。你可以选择：</p><div class="actions"><button class="btn primary sm" data-a="share" data-v="named">同意，显示我的昵称</button><button class="btn soft sm" data-a="share" data-v="anon">同意，但是匿名</button><button class="btn soft sm" data-a="share" data-v="no">不同意</button></div></div>`:''}
+  ${['named','anon'].includes(p.share)?`<p class="hint">这段练习已作为示例发布（${p.share==='anon'?'匿名':'显示昵称'}）。</p>`:''}
+  ${prBody(p)}
+  <div class="panel"><h3>老师评语</h3>${(p.comments||[]).length?p.comments.map(c=>`<div class="cm"><p>${esc(c.text)}</p><small>${rel(c.at)}</small></div>`).join(''):'<p class="hint">老师还没有留评语。</p>'}</div>
+  <button class="btn primary" style="align-self:flex-start" data-a="startRec" data-t="${p.topic}">${I.mic}准备好了，去开麦发布</button>
+  </div>`;
+}
+
+/* ---------- practice (in progress) ---------- */
+function newPractice(mode,level,topic){const s=sess();return {mode,level,topic,cur:0,segs:mode==='seg'?SCAF.map(()=>({})):[{}],recState:'idle',secs:0,timer:null,err:null,peek:{},docId:null,ai:null,session:s&&s.topic===topic?s.id:null}}
+function scafHTML(i,level){
+  const s=SCAF[i],peek=S.pr&&(S.pr.peek[i]||S.pr.peek.all);
+  if(level==='easy'||peek)return `<div class="scaf" style="border-color:${s.c};background:${s.bg}"><div class="scafh"><span class="stepchip" style="background:${s.c}">${s.n}</span><b>${s.t}</b></div><p>${s.hint}</p><div class="starters">${s.st.map(x=>`<span>${esc(x)}</span>`).join('')}</div></div>`;
+  if(level==='normal')return `<div class="scaf" style="border-color:${s.c}"><div class="scafh"><span class="stepchip" style="background:${s.c}">${s.n}</span><b>${s.t}</b><span style="flex:1"></span><button class="linkbtn muted" data-a="peek" data-i="${i}">需要提示？</button></div></div>`;
+  return `<div class="scaf"><div class="scafh"><span class="stepchip" style="background:var(--muted)">${i+1}</span><b>第 ${i+1} 段</b><span style="flex:1"></span><button class="linkbtn muted" data-a="peek" data-i="${i}">需要提示？</button></div></div>`;
+}
+function recWidget(max){
+  const r=S.pr,on=r.recState==='rec',wait=['starting','saving'].includes(r.recState);
+  return `<div class="onairbox" style="padding:18px 14px;gap:10px">
+    <div class="bigtime" style="font-size:34px"><span id="prTime">${mmss(r.secs)}</span> <small>/ ${mmss(max)}</small></div>
+    <div class="live ${on?'real':'idle'}" id="prBars" style="height:40px">${Array.from({length:18},()=>'<i></i>').join('')}</div>
+    <button class="recbtn ${on?'stop':''}" data-a="${on?'prStop':'prRec'}" ${wait?'disabled':''} aria-label="${on?'停止录音':'开始录音'}">${on?I.stop:I.mic}</button>
+    ${on&&hasSTT?'<div class="livecap"><small>即时字幕</small><span id="prCap">……</span></div>':''}
+    <p>${r.recState==='starting'?'正在打开麦克风……':r.recState==='saving'?'正在处理录音……':on?'说完就按停止。':'按红色按钮开始录音。'}</p>
+  </div>
+  ${r.err?`<div class="errbox" role="alert"><b>${r.err==='denied'?'麦克风权限被拒绝了。':'这里不能使用麦克风。'}</b>${r.err==='denied'?'请在浏览器设定里允许这个网站使用麦克风。':'有些预览视窗不允许录音，请用网站版打开。'}也可以先用打字练习。<button class="btn soft sm" style="align-self:flex-start" data-a="prType">改用打字练习</button></div>`:''}`;
+}
+function segTip(i){const g=S.pr.segs[i],k=SCAF[i].k,v=g.ai?g.ai[k]:null;
+  if(v==null)return `<div class="fb words"><h4>想要 AI 反馈？</h4>在文字稿里写下你刚才说的话，再按“更新 AI 反馈”。</div>`;
+  if(v===2)return `<div class="fb good"><h4>这一步做到了！</h4>${RUBRIC[k][2]}。</div>`;
+  return `<div class="fb try"><h4>可以试试</h4>${TIPS[k][v]}</div>`;
+}
+function segResult(i){
+  const g=S.pr.segs[i],s=SCAF[i],v=g.ai||{};
+  return `${g.audioUrl||g.audioId?`<div class="player"><button class="play" data-a="play" data-play="prd:${i}" aria-label="试听">${I.play}${I.pause}</button>${waveHTML('prd:'+i,24)}<span class="dur">${mmss(g.secs||0)}</span></div>`:''}
+  <label class="fl" for="segText">文字稿（可以修改）</label><textarea id="segText" data-i="${i}">${esc(g.text||'')}</textarea>
+  <div class="rub">${[s.k,'lang','flow'].map(k=>critRow(k,v[k]!=null?v[k]:null)).join('')}</div>
+  ${segTip(i)}
+  <div class="actions"><button class="btn soft sm" data-a="prReeval" data-i="${i}">更新 AI 反馈</button><button class="btn soft sm" data-a="prRedo" data-i="${i}">重录这一段</button>${i<4?`<button class="btn primary sm" data-a="prGo" data-i="${i+1}">下一段 →</button>`:''}</div>`;
+}
+function segPractice(){
+  const r=S.pr,done=r.segs.filter(g=>g.done).length,busyRec=['rec','starting','saving'].includes(r.recState);
+  const cards=SCAF.map((s,i)=>{
+    const g=r.segs[i],hide=r.level==='hard'&&!r.peek[i]&&!r.peek.all;
+    if(i!==r.cur)return `<button class="segcard ${g.done?'done':''}" data-a="prGo" data-i="${i}"><span class="stepchip" style="background:${hide?'var(--muted)':s.c}">${hide?i+1:s.n}</span><span class="t"><b>${hide?'第 '+(i+1)+' 段':s.t}</b><small>${g.done?(g.text?esc(g.text.slice(0,22))+'……':'已录音'):'还没录'}</small></span>${g.done&&g.ai&&g.ai[s.k]!=null?`<span class="rpill l${g.ai[s.k]}">${LVL[g.ai[s.k]]}</span>`:''}</button>`;
+    return `<div class="segcard cur">${scafHTML(i,r.level)}${g.done&&!busyRec?segResult(i):recWidget(30)}</div>`;
+  }).join('');
+  return `<div class="progress" aria-label="已完成 ${done}/5 段"><span style="width:${done/5*100}%"></span></div><p class="hint">已完成 ${done}/5 段，自动保存</p><div class="stack">${cards}</div>
+  ${done===5?`<div style="height:12px"></div><div class="panel"><h3>五段都完成了！</h3>${rubricTable(r.ai)}${nextTips(r.ai)}<div class="actions"><button class="btn primary" data-a="prStart" data-m="full" data-t="${r.topic}">接着练习完整播客</button><button class="btn soft" data-a="nav" data-s="learn">回到学练</button></div></div>`:''}`;
+}
+function fullPractice(){
+  const r=S.pr,g=r.segs[0],busyRec=['rec','starting','saving'].includes(r.recState);
+  const pills=`<div class="scafrow">${SCAF.map(s=>`<span class="scafpill" style="border-color:${s.c};color:${s.c}"><b>${s.n}</b>${s.t}</span>`).join('')}</div>`;
+  const scaf=r.level==='easy'?`<div class="stack" style="gap:6px">${SCAF.map((s,i)=>`<div class="scafline"><span class="stepchip" style="background:${s.c}">${s.n}</span><span><b>${s.t}</b>${esc(s.st.join(' / '))}</span></div>`).join('')}</div>`
+    :r.level==='normal'?pills:(r.peek.all?pills:'<p class="hint" style="margin:0">挑战模式：没有提示，自由说。</p><button class="linkbtn muted" style="align-self:flex-start" data-a="peek" data-i="all">需要提示？</button>');
+  const result=g.done&&!busyRec?`<div class="stack">
+    <div class="panel"><h3>${I.ear}你的录音</h3>${g.audioUrl||g.audioId?`<div class="player"><button class="play" data-a="play" data-play="prd:0" aria-label="试听">${I.play}${I.pause}</button>${waveHTML('prd:0',30)}<span class="dur">${mmss(g.secs||0)}</span></div>`:''}
+      <label class="fl" for="segText">文字稿（可以修改）</label><textarea id="segText" data-i="0" style="min-height:120px">${esc(g.text||'')}</textarea>
+      <div class="actions"><button class="btn soft sm" data-a="prReeval" data-i="0">更新 AI 反馈</button><button class="btn soft sm" data-a="prRedo" data-i="0">重录</button></div></div>
+    <div class="panel"><h3>AI 按 rubric 的反馈</h3>${rubricTable(g.ai)}${nextTips(g.ai)}<p class="private">${I.lock}已自动保存，只有你和老师看得到。</p></div>
+    <div class="actions"><button class="btn primary" data-a="startRec" data-t="${r.topic}">${I.mic}准备好了，去开麦发布</button><button class="btn soft" data-a="lvlUp">${r.level==='hard'?'再练一次':'换更难的再练一次'}</button></div></div>`:recWidget(120);
+  return `<div class="panel"><h3>${r.level==='hard'?'挑战：完全自由说':'说的时候可以看着提示'}</h3>${scaf}</div><div style="height:12px"></div>${result}`;
+}
+function practiceScreen(){
+  const r=S.pr;if(!r){S.screen='learn';return learnScreen()}
+  const t=topicOf(r.topic)||{title:''};
+  return `<header class="appbar"><button class="iconbtn" data-a="prExit" aria-label="返回">${I.back}</button><h1>${r.mode==='seg'?'分段练习':'完整播客'} · ${LVNAME[r.level]}</h1></header>
+  <p class="hint" style="margin:0 0 10px">${esc(t.title)} · 只有你和老师看得到</p>${r.mode==='seg'?segPractice():fullPractice()}`;
+}
+function evalPr(i){
+  const r=S.pr,g=r.segs[i];
+  if(r.mode==='seg'){const k=SCAF[i].k;g.ai={[k]:evalCrit(k,g.text,true),lang:evalCrit('lang',g.text),flow:evalFlow(g.stats,g.secs,true)};r.ai=combineSeg(r.segs)}
+  else{g.ai=aiFull(g.text,g.stats,g.secs);r.ai=g.ai}
+}
+async function savePr(){
+  const r=S.pr;if(!r||!MYID)return;
+  try{
+    for(const g of r.segs){if(g.done&&g.blob&&!g.audioId&&!g.up){g.up=true;try{const a=await api.putAudio(g.blob);if(a.audioId){g.audioId=a.audioId;g.audioParts=a.audioParts}}finally{g.up=false}}}
+    const out=g=>{const o={text:g.text||'',dur:g.secs||0,ai:g.ai||null,done:!!g.done};if(g.audioId){o.audioId=g.audioId;o.audioParts=g.audioParts||1}if(!CLOUD&&g.audioUrl)o.audioUrl=g.audioUrl;return o};
+    const f={by:MYID,topic:r.topic,mode:r.mode,level:r.level,ai:r.ai||null,session:r.session||null,done:r.segs.filter(g=>g.done).length,updatedAt:Date.now()};
+    if(r.mode==='seg')f.segments=r.segs.map(out);
+    else{const g=out(r.segs[0]);f.text=g.text;f.dur=g.dur;if(g.audioId){f.audioId=g.audioId;f.audioParts=g.audioParts}if(g.audioUrl)f.audioUrl=g.audioUrl}
+    if(!r.docId){r.docId=newId('x');f.createdAt=Date.now();f.share='none';f.comments=[]}
+    await api.upsert('practices',r.docId,f);
+  }catch(e){console.warn(e);toast('练习没有保存成功：'+(e&&e.message?e.message:'请检查网络'))}
+}
+
+/* ---------- teacher: class control, practice review, projector ---------- */
+function stageLive(s,teacher){
+  const ch=sessChecks();
+  switch(s.stage){
+   case 'feel':return feelBars(ch,teacher);
+   case 'spectrum':{let x=posTrack(ch,'pos',teacher,false);const d=ch.filter(c=>c.pos!=null).sort((a,b)=>a.pos-b.pos);
+     if(teacher&&d.length>=2)x+=`<p class="hint">想引发讨论？可以请立场最不同的 <b>${esc(stu(d[0].by).real)}</b>（${posLabel(d[0].pos)}）和 <b>${esc(stu(d[d.length-1].by).real)}</b>（${posLabel(d[d.length-1].pos)}）说说想法。</p>`;return x}
+   case 'respectrum':{let x=posTrack(ch,'pos2',teacher,true)+'<p class="hint">灰点：上课一开始　蓝点：现在</p>';
+     if(teacher){const moved=ch.filter(c=>c.pos!=null&&c.pos2!=null&&posLabel(c.pos2)!==posLabel(c.pos));x+=moved.length?`<p class="hint">立场有改变的同学（${moved.length} 位）：${moved.map(c=>`${esc(stu(c.by).real)} ${posLabel(c.pos)}→${posLabel(c.pos2)}`).join('；')}</p>`:''}return x}
+   case 'wall':return `<div class="wallgrid">${wallCards(teacher)}</div>`;
+   case 'learn':return `${voteBars(ch)}<p class="hint">学生投票后，可以自己打开“看看示例 B 好在哪里”。在大屏上也可以一起揭晓。</p>`;
+   case 'practice':return practiceLive(s,teacher);
+   case 'end':return endSummary(s,ch);
+  }
+  return '';
+}
+function practiceLive(s,teacher){
+  const prs=latestPerStudent(D.practices.filter(p=>p.session===s.id));
+  const sum=aiSummary(prs);
+  const sumHTML=sum.length?`<div class="fb try" style="margin-bottom:10px"><h4>AI 先筛</h4><ul>${sum.slice(0,4).map(x=>`<li>有 ${x.n} 位同学还没做到“${x.c.t}”${teacher?'：'+x.names.map(esc).join('、'):''}</li>`).join('')}</ul></div>`:'';
+  if(!prs.length)return '<div class="empty">还没有同学开始练习。</div>';
+  if(!teacher){
+    const stepDone=SCAF.map((st,i)=>prs.filter(p=>p.mode==='seg'?(p.segments||[])[i]&&p.segments[i].done:(p.done||0)>0).length);const max=Math.max(1,prs.length);
+    return `${sumHTML}<p class="hint">${prs.length} 位同学正在练习</p><div class="bars">${SCAF.map((st,i)=>`<div class="barrow"><span class="stepchip" style="background:${st.c};justify-self:center">${st.n}</span><div class="bartrack"><div class="bar" style="width:${stepDone[i]/max*100}%;background:${st.c}"></div></div><b class="n">${stepDone[i]}</b></div>`).join('')}</div><p class="hint">每一步已经完成的人数</p>`;
+  }
+  return `${sumHTML}<div class="tablewrap"><table><thead><tr><th>学生</th><th>模式</th><th>难度</th><th>进度</th><th>AI rubric</th></tr></thead><tbody>${prs.map(p=>`<tr><td>${esc(stu(p.by).real)}</td><td>${p.mode==='seg'?'分段':'完整'}</td><td>${LVNAME[p.level]||''}</td><td class="n">${p.mode==='seg'?(p.done||0)+'/5':(p.done?'已录':'未录')}</td><td><span class="rpills">${rubricPills(p.ai)}</span></td></tr>`).join('')}</tbody></table></div><p class="hint">要看录音和留评语，请到“学练”分页。</p>`;
+}
+function endSummary(s,ch){
+  const moved=ch.filter(c=>c.pos!=null&&c.pos2!=null&&posLabel(c.pos2)!==posLabel(c.pos)).length;
+  const prs=latestPerStudent(D.practices.filter(p=>p.session===s.id));
+  return `<div class="tiles"><div class="stat"><b>${ch.length}</b><small>位同学参与</small></div><div class="stat"><b>${moved}</b><small>位同学立场有改变</small></div><div class="stat"><b>${prs.length}</b><small>位同学完成练习</small></div></div><p class="hint" style="margin-top:10px">课后到开麦社群，用“立、理、例、驳、结”发布你的播客。</p>`;
+}
+function tClass(){
+  const s=sess();
+  if(!s){
+    const live=D.topics.filter(t=>t.status==='live');if(!S.classTopic||!topicOf(S.classTopic))S.classTopic=live[0]&&live[0].id;
+    return `<section class="panel"><h3>开始上课</h3><p class="hint">按下开始后，学生的手机会自动跟着你的步骤走：${STAGES.map(x=>x[1]).join(' → ')}。</p>
+      <label class="fl">今天的话题</label><div class="chips">${live.map(t=>`<button class="chip plain" data-a="clsTopic" data-t="${t.id}" aria-pressed="${S.classTopic===t.id}">${esc(t.title)}</button>`).join('')||'<p class="hint">先在“话题管理”上线一个话题。</p>'}</div>
+      <button class="btn primary" style="align-self:flex-start" data-a="clsStart" ${S.classTopic?'':'disabled'}>开始上课</button>${joinCard(false)}</section>${rubricRef()}`;
+  }
+  const t=topicOf(s.topic)||{title:''};const n=sessChecks().length;
+  return `<section class="panel"><div class="clshead"><div><small class="hint">上课中</small><h3 style="font-size:18px">${esc(t.title)}</h3></div><div class="actions"><button class="btn primary sm" data-a="proj">投影大屏</button><button class="btn soft sm" data-a="clsDemo">加入示范同学</button><button class="btn soft sm" data-a="clsEnd" style="color:var(--danger)">结束上课</button></div></div>
+    <div class="stagebar">${STAGES.map((x,i)=>`<button class="stagebtn" data-a="stage" data-v="${x[0]}" ${x[0]===s.stage?'aria-current="step"':''}><small>${i+1}</small>${x[1]}</button>`).join('')}</div>
+    <p class="hint">已有 ${n} 位同学回应。按上面的步骤，学生手机会跟着切换。</p>${joinCard(false)}</section>
+    <div style="height:12px"></div><section class="panel"><h3>${esc(stageName(s.stage))} · 即时结果（老师看得到名字）</h3>${stageLive(s,true)}</section>`;
+}
+function tPractice(){
+  const s=sess(),f=S.pf||'all';
+  let list=D.practices;
+  if(f==='class'&&s)list=list.filter(p=>p.session===s.id);
+  if(f==='asked')list=list.filter(p=>p.share==='asked');
+  if(f==='pub')list=list.filter(p=>['named','anon'].includes(p.share));
+  const sum=aiSummary(latestPerStudent(list));
+  const fl=[['all','全部'],...(s?[['class','本节课']]:[]),['asked','等学生同意'],['pub','已发布的示例']];
+  return `<p class="hint" style="margin-bottom:10px">练习只有学生本人和老师看得到。AI 已按 rubric 先评一次，你可以留评语，或邀请学生把练习作为示例（学生同意后才公开，可选匿名）。</p>
+  <div class="chips" role="group" aria-label="筛选" style="margin-bottom:12px">${fl.map(([k,n])=>`<button class="chip plain" data-a="pf" data-k="${k}" aria-pressed="${f===k}">${n}</button>`).join('')}</div>
+  ${sum.length?`<div class="fb try" style="margin-bottom:12px"><h4>AI 先筛</h4><ul>${sum.slice(0,4).map(x=>`<li>有 ${x.n} 位同学还没做到“${x.c.t}”：${x.names.map(esc).join('、')}</li>`).join('')}</ul></div>`:''}
+  <div class="stack">${list.map(tPrCard).join('')||'<div class="empty">还没有练习。</div>'}</div>${rubricRef()}`;
+}
+function tPrCard(p){
+  const u=stu(p.by),open=S.tExp===p.id;
+  const sh={asked:'<span class="flag ai">等学生同意</span>',named:'<span class="badge pin">已发布 · 显示昵称</span>',anon:'<span class="badge pin">已发布 · 匿名</span>',no:'<span class="flag h">学生不同意发布</span>',withdrawn:'<span class="flag h">已取消发布</span>'}[p.share]||'';
+  const canAsk=!['asked','named','anon'].includes(p.share);
+  return `<div class="mod"><div class="mh">${av(p.by)}<b>${esc(u.real)}</b><small>（${esc(u.nick)}）· ${esc(topicOf(p.topic)?.title||'')} · ${p.mode==='seg'?'分段 '+(p.done||0)+'/5':'完整播客'} · ${LVNAME[p.level]||''} · ${esc(p.when)}</small></div>
+    <div class="mh"><span class="rpills">${rubricPills(p.ai)}</span>${sh}${(p.comments||[]).length?`<span class="flag h">评语 ${p.comments.length}</span>`:''}</div>
+    <div class="actions"><button class="btn soft sm" data-a="tExp" data-id="${p.id}">${open?'收起':'听录音、写评语'}</button>${canAsk?`<button class="btn soft sm" data-a="tAsk" data-id="${p.id}">邀请作为示例</button>`:''}${['named','anon'].includes(p.share)?`<button class="btn soft sm" data-a="tWithdraw" data-id="${p.id}">取消发布</button>`:''}</div>
+    ${open?`<div class="stack">${prBody(p)}<div class="panel"><h3>老师评语</h3>${(p.comments||[]).map(c=>`<div class="cm"><p>${esc(c.text)}</p><small>${rel(c.at)}</small></div>`).join('')}
+      <div class="chips">${QUICK.map(q=>`<button class="chip plain" data-a="quick" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>
+      <textarea id="tCm" placeholder="写给这位同学的评语……">${esc(S.tCm||'')}</textarea><button class="btn primary sm" style="align-self:flex-start" data-a="tSendCm" data-id="${p.id}">送出评语</button></div></div>`:''}
+  </div>`;
+}
+function projector(){
+  const s=sess();
+  const exit='<button class="btn soft sm" data-a="projExit">离开大屏</button>';
+  if(!s)return `<div class="scroll projwrap"><div class="projtop"><span class="logo">开麦</span><span style="flex:1"></span>${exit}</div>${joinCard(true)}<div class="empty" style="font-size:20px;padding:30px 20px">还没有开始上课。</div></div>`;
+  const t=topicOf(s.topic)||{title:''};const idx=STAGES.findIndex(x=>x[0]===s.stage);const ch=sessChecks();
+  let body='';
+  switch(s.stage){
+   case 'feel':body=`<h3 class="projq">看到这个话题，你的第一感觉是？</h3>${feelBars(ch,false)}`;break;
+   case 'spectrum':body=`<h3 class="projq">你同意吗？用手机把圆点拉到你的位置</h3>${posTrack(ch,'pos',false,false)}`;break;
+   case 'respectrum':body=`<h3 class="projq">上完课，你的立场有没有改变？</h3>${posTrack(ch,'pos2',false,true)}<p class="hint">灰点：上课一开始　蓝点：现在</p>`;break;
+   case 'wall':body=`<h3 class="projq">观点墙</h3><div class="wallgrid big">${wallCards(false)}</div>`;break;
+   case 'learn':{const ex=exOf(s.topic);body=`<h3 class="projq">比一比：哪一个更有说服力？</h3><div class="exgrid"><div class="excard"><div class="exhead"><b>示例 A</b><button class="play sm" data-a="play" data-play="ex:${s.topic}:A" aria-label="播放示例 A">${I.play}${I.pause}</button></div><p>${esc(ex.plain)}</p></div><div class="excard"><div class="exhead"><b>示例 B</b><button class="play sm" data-a="play" data-play="ex:${s.topic}:B" aria-label="播放示例 B">${I.play}${I.pause}</button></div><p>${esc(ex.good.join(''))}</p></div></div><div style="height:12px"></div>${voteBars(ch)}
+     <div class="actions" style="margin:12px 0"><button class="btn primary sm" data-a="projReveal">${S.projReveal?'收起结构':'揭晓：好的发言有五步'}</button></div>${S.projReveal?annotated(s.topic):''}`;break}
+   case 'practice':body=`<h3 class="projq">练习中：立、理、例、驳、结</h3>${practiceLive(s,false)}`;break;
+   case 'end':body=`<h3 class="projq">这节课的收获</h3>${endSummary(s,ch)}`;break;
+  }
+  return `<div class="scroll projwrap"><div class="projtop"><span class="logo">开麦</span><span class="onair">${idx+1}/${STAGES.length} · ${esc(stageName(s.stage))}</span><span style="flex:1"></span><button class="btn soft sm" data-a="projQR">${S.projQR||s.stage==='feel'?'收起二维码':'扫码加入'}</button><button class="btn soft sm" data-a="stageMove" data-d="-1" ${idx<=0?'disabled':''}>上一步</button><button class="btn primary sm" data-a="stageMove" data-d="1" ${idx>=STAGES.length-1?'disabled':''}>下一步</button>${exit}</div><h2 class="projtitle">${esc(t.title)}</h2>${(s.stage==='feel'&&!S.projQRoff)||S.projQR?joinCard(true):''}${body}</div>`;
+}
+
+/* join card: QR code of this page's address, for students to scan */
+function joinUrl(){return location.href.split('#')[0]}
+function qrOK(){return /^https?:$/.test(location.protocol)&&!/claude|localhost|127\.0\.0\.1/.test(location.hostname)&&typeof qrcode!=='undefined'}
+function qrSVG(t){try{const q=qrcode(0,'M');q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return ''}}
+function joinCard(big){
+  const url=joinUrl(),ok=qrOK();
+  return `<div class="joincard ${big?'big':''}">${ok?`<div class="qr" role="img" aria-label="加入开麦的二维码">${qrSVG(url)}</div>`:''}<div class="jtx"><b>学生用手机扫码加入</b><span class="jurl">${esc(url)}</span>${ok?'<small>扫码后取一个昵称，手机就会跟着老师的步骤走。</small>':'<small>现在是本机文件或预览，这个网址别人打不开。请先把网站部署到 Netlify，再用那个网址打开，这里就会出现可以扫的二维码。</small>'}</div></div>`;
+}
+
+/* demo classmates for the booth: fill the current session with plausible responses */
+function demoPractice(sid,uid,topic,kind){
+  const ex=exOf(topic),now=Date.now();
+  const segOf=(texts)=>texts.map((tx,i)=>{const g={text:tx,secs:12,stats:{total:12000,voiced:9000,longest:900},done:true};g.ai={[SCAF[i].k]:evalCrit(SCAF[i].k,tx,true),lang:evalCrit('lang',tx),flow:evalFlow(g.stats,12,true)};return g});
+  let p;
+  if(kind[0]==='seg'){const n=kind[1];const segs=segOf(ex.good.slice(0,n));while(segs.length<5)segs.push({});const out=segs.map(g=>({text:g.text||'',dur:g.secs||0,ai:g.ai||null,done:!!g.done}));p={mode:'seg',level:kind[2],segments:out,ai:combineSeg(segs),done:n}}
+  else{const tx=kind[1];const st={total:60000,voiced:kind[3]||46000,longest:kind[4]||1600};p={mode:'full',level:kind[2],text:tx,dur:60,ai:aiFull(tx,st,60),done:1}}
+  return Object.assign(p,{by:uid,topic,session:sid,share:'none',comments:[],createdAt:now-Math.floor(Math.random()*600000),updatedAt:now});
+}
+async function addDemoClass(){
+  const s=sess();if(!s)return;const ex=exOf(s.topic);const now=Date.now();
+  const feel=[0,2,1,3,0,4,0,2,3,1],pos=[20,75,30,55,85,15,70,40,25,60],pos2=[30,70,45,50,80,30,65,55,35,60];
+  const late=['respectrum','end'].includes(s.stage);
+  for(let i=0;i<10;i++){
+    const uid='s'+(i+1);const f={session:s.id,by:uid,feel:feel[i],pos:pos[i],text:ex.wall[i],wallAt:now+i,vote:i<8?'B':'A'};
+    if(late)f.pos2=pos2[i];
+    await api.upsert('checkins',s.id+'_'+uid,f);
+  }
+  const g=ex.good;
+  const kinds={s1:['seg',5,'easy'],s2:['seg',3,'easy'],s3:['full','我同意买盲盒，因为拆开的时候很开心。所以我觉得可以买。','normal',30000,4200],s4:['full',g.join(''),'normal'],s5:['seg',2,'normal'],s6:['full','我不同意花很多钱买盲盒，因为很容易越买越多，停不下来。比如我同学一个月花了一百多块。所以我希望大家要控制自己。','hard']};
+  for(const uid in kinds)await api.upsert('practices','demo_'+s.id+'_'+uid,demoPractice(s.id,uid,s.topic,kinds[uid]));
+}
+
+/* ---------- inputs & actions for 引·学·练 ---------- */
+dev.addEventListener('input',e=>{
+  const el=e.target,id=el.id;
+  if(id==='cSlider'){S.slider=+el.value;const l=document.getElementById('cSliderLab');if(l)l.textContent='你选的是：'+posLabel(S.slider)}
+  else if(id==='cWall')S.wallDraft=el.value;
+  else if(id==='segText'&&S.pr){const g=S.pr.segs[+el.dataset.i];if(g)g.text=el.value}
+  else if(id==='tCm')S.tCm=el.value;
+});
+function keep(){S._keep=true;render()}
+dev.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a;
+  switch(a){
+  /* student: class */
+  case 'cFeel':checkin({feel:+b.dataset.i}).then(()=>toast('已送出')).catch(()=>toast('没有成功，请检查网络'));break;
+  case 'cPos':{const el=document.getElementById('cSlider');const v=el?+el.value:50;S.slider=null;document.activeElement?.blur();checkin({[b.dataset.k]:v}).then(()=>{toast('已送出：'+posLabel(v));keep()}).catch(()=>toast('没有成功，请检查网络'));break}
+  case 'cWallSend':{const t=(S.wallDraft!=null?S.wallDraft:(myCheck()||{}).text||'').trim();if(!t){toast('先写一句你的看法');break}document.activeElement?.blur();
+    const f={text:t,wallAt:Date.now()};const fl=aiFlag(t);if(fl)f.wallFlag=fl;checkin(f).then(()=>{S.wallDraft=null;toast('已贴上观点墙');keep()});break}
+  case 'vote':{const tid=b.dataset.t,v=b.dataset.v;S.votes[tid]=v;const s=sess();if(s&&s.topic===tid)checkin({vote:v});keep();break}
+  case 'reveal':S.reveal[b.dataset.t]=!S.reveal[b.dataset.t];keep();break;
+  case 'lt':S.lt=b.dataset.t;keep();break;
+  case 'lvl':S.lvl=b.dataset.v;keep();break;
+  case 'prStart':leaveRec();resetComp();S.pr=newPractice(b.dataset.m,S.lvl,b.dataset.t);go('practice');dev.querySelector('.scroll').scrollTop=0;break;
+  case 'prGo':{const r=S.pr;if(!r||['rec','starting','saving'].includes(r.recState))break;r.cur=+b.dataset.i;r.err=null;r.secs=0;r.recState='idle';keep();break}
+  case 'prRec':(async()=>{const r=S.pr;r.recState='starting';r.err=null;r.secs=0;keep();
+    try{await micStart('#prBars','#prCap');r.recState='rec';const max=r.mode==='seg'?30:120;
+      r.timer=setInterval(()=>{r.secs++;const el=document.getElementById('prTime');if(el)el.textContent=mmss(r.secs);if(r.secs>=max)dev.querySelector('[data-a="prStop"]')?.click()},1000);keep()}
+    catch(err){r.recState='idle';r.err=micErr(err);keep()}})();break;
+  case 'prStop':(async()=>{const r=S.pr;clearInterval(r.timer);r.recState='saving';keep();const res=await micStop();const i=r.mode==='seg'?r.cur:0;
+    r.segs[i]={done:true,text:res?res.text:'',audioUrl:res?res.url:null,blob:res?res.blob:null,secs:Math.max(1,r.secs),stats:res?res.stats:null};
+    r.recState='idle';evalPr(i);keep();savePr()})();break;
+  case 'prType':{const r=S.pr;const i=r.mode==='seg'?r.cur:0;r.segs[i]={done:true,text:'',secs:0};r.err=null;evalPr(i);keep();setTimeout(()=>document.getElementById('segText')?.focus(),0);break}
+  case 'prReeval':{const i=+b.dataset.i;evalPr(i);keep();savePr();toast('AI 反馈已更新');break}
+  case 'prRedo':{const r=S.pr;const i=+b.dataset.i;r.segs[i]={};r.recState='idle';r.secs=0;r.err=null;keep();break}
+  case 'peek':S.pr.peek[b.dataset.i]=true;keep();break;
+  case 'prExit':leaveRec();S.pr=null;go('learn');break;
+  case 'lvlUp':{const r=S.pr;const nx={easy:'normal',normal:'hard',hard:'hard'}[r.level];S.lvl=nx;S.pr=newPractice('full',nx,r.topic);go('practice');break}
+  case 'openPr':S.prView=b.dataset.p;go('mypr');dev.querySelector('.scroll').scrollTop=0;break;
+  case 'share':{const p=D.practices.find(x=>x.id===S.prView);if(!p)break;const v=b.dataset.v;guard(()=>api.update('practices',p.id,{share:v}),v==='no'?'已回复老师：不同意发布':'谢谢！你的练习已作为示例发布');break}
+  /* teacher */
+  case 'clsTopic':S.classTopic=b.dataset.t;keep();break;
+  case 'clsStart':guard(()=>api.upsert('session','live',{active:true,sid:newId('c'),topic:S.classTopic,stage:'feel',startedAt:Date.now()}),'开始上课！学生手机会跟着你的步骤走');break;
+  case 'stage':guard(()=>api.upsert('session','live',{stage:b.dataset.v}));break;
+  case 'stageMove':{const s=sess();if(!s)break;const i=STAGES.findIndex(x=>x[0]===s.stage)+(+b.dataset.d);if(i<0||i>=STAGES.length)break;guard(()=>api.upsert('session','live',{stage:STAGES[i][0]}));break}
+  case 'clsEnd':S.proj=false;guard(()=>api.upsert('session','live',{active:false}),'已结束上课');break;
+  case 'clsDemo':guard(()=>addDemoClass(),'已加入 10 位示范同学的回应');break;
+  case 'proj':S.proj=true;S.projReveal=false;render();break;
+  case 'projExit':S.proj=false;render();break;
+  case 'projQR':{const s=sess();if(s&&s.stage==='feel'&&!S.projQR){S.projQRoff=!S.projQRoff}else S.projQR=!S.projQR;keep();break}
+  case 'projReveal':S.projReveal=!S.projReveal;keep();break;
+  case 'spot':S.spot=S.spot===b.dataset.id?null:b.dataset.id;keep();break;
+  case 'wallHide':{const c=D.checkins.find(x=>x.id===b.dataset.id);if(c)guard(()=>api.upsert('checkins',c.id,{wallHidden:!c.wallHidden}),c.wallHidden?'已恢复':'已从大屏隐藏');break}
+  case 'pf':S.pf=b.dataset.k;keep();break;
+  case 'tExp':S.tExp=S.tExp===b.dataset.id?null:b.dataset.id;S.tCm='';keep();break;
+  case 'tAsk':guard(()=>api.update('practices',b.dataset.id,{share:'asked'}),'已邀请，学生同意后才会公开');break;
+  case 'tWithdraw':guard(()=>api.update('practices',b.dataset.id,{share:'withdrawn'}),'已取消发布');break;
+  case 'quick':S.tCm=(S.tCm?S.tCm.trim()+' ':'')+b.dataset.q;keep();break;
+  case 'tSendCm':{const p=D.practices.find(x=>x.id===b.dataset.id);const t=(S.tCm||'').trim();if(!p||!t){toast('先写评语');break}
+    const list=(p.comments||[]).concat([{text:t,at:Date.now()}]);S.tCm='';guard(()=>api.update('practices',p.id,{comments:list}),'评语已送出');break}
+  }
+});
+
+function seedPractices(now){
+  const m=a=>now-a*60000;
+  const g=EXAMPLES.t1.good;
+  const st={total:62000,voiced:50000,longest:1400};
+  const full={id:'x_seed1',by:'s4',topic:'t1',mode:'full',level:'normal',text:g.join(''),dur:62,ai:aiFull(g.join(''),st,62),done:1,session:'seed',share:'named',comments:[{text:'例子很具体，回应不同看法也很有说服力！',at:m(1400)}],createdAt:m(1500),updatedAt:m(1500)};
+  const weak=['我同意买盲盒。','因为很好玩。','比如很多人都在买。'];
+  const segs=weak.map((tx,i)=>{const o={text:tx,secs:8,stats:{total:8000,voiced:5000,longest:1200},done:true};o.ai={[SCAF[i].k]:evalCrit(SCAF[i].k,tx,true),lang:evalCrit('lang',tx),flow:evalFlow(o.stats,8,true)};return o});
+  while(segs.length<5)segs.push({});
+  const seg={id:'x_seed2',by:'s2',topic:'t1',mode:'seg',level:'easy',segments:segs.map(o=>({text:o.text||'',dur:o.secs||0,ai:o.ai||null,done:!!o.done})),ai:combineSeg(segs),done:3,session:'seed',share:'none',comments:[],createdAt:m(900),updatedAt:m(900)};
+  return [full,seg];
+}
+
+/* ---------- join + loading screens (cloud mode) ---------- */
+const NICKS=['小海豚','冰淇淋','午后阳光','奶茶三分糖','地瓜球','咖椰吐司','小星星','追风少年','薄荷糖','芒果布丁','晴天','小熊软糖'];
+function loadingScreen(){
+  return `<div class="scroll"><div class="login"><span class="lk">${I.ear}</span><h2>正在连线……</h2><p class="hint">正在载入全班的播客。</p></div></div>`;
+}
+function joinScreen(){
+  if(!S.join)S.join={nick:NICKS[Math.floor(Math.random()*NICKS.length)],real:'',err:''};
+  return `<div class="scroll"><header class="appbar"><span class="logo">开麦</span><span style="flex:1"></span><span class="classtag">3E2 华文班</span></header>
+  <form class="login" id="joinForm" style="margin-top:12px">
+    <span class="lk">${I.mic}</span>
+    <h2>欢迎来开麦</h2>
+    <p class="hint">先取一个昵称。同学只会看到你的昵称。</p>
+    <div style="text-align:left"><label class="fl" for="jNick">昵称</label><input type="text" id="jNick" maxlength="12" value="${esc(S.join.nick)}" style="text-align:left;font-family:var(--f-body);letter-spacing:0;font-size:16px"></div>
+    <div style="text-align:left"><label class="fl" for="jReal">真实姓名（只有老师看得到，可留空）</label><input type="text" id="jReal" maxlength="20" value="${esc(S.join.real)}" style="text-align:left;font-family:var(--f-body);letter-spacing:0;font-size:16px"></div>
+    ${S.join.err?`<p class="err" role="alert">${esc(S.join.err)}</p>`:''}
+    <button class="btn primary" style="justify-content:center" type="submit">进入开麦</button>
+  </form></div>`;
+}
+
+/* re-render on data changes, but never while someone is typing, recording or listening */
+function busy(){
+  const a=document.activeElement;
+  if(a&&dev.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))return true;
+  if(MIC.active||P.id)return true;
+  if(['starting','saving','rec'].includes(S.rec.status))return true;
+  if(['starting','saving','rec'].includes(S.comp.recState))return true;
+  if(S.pr&&['starting','saving','rec'].includes(S.pr.recState))return true;
+  return !!S.working;
+}
+function requestRender(){if(busy()){S._pending=true;return}S._keep=true;render()}
+function flushRender(){if(S._pending&&!busy()){S._pending=false;S._keep=true;render()}}
+dev.addEventListener('focusout',()=>setTimeout(flushRender,0));
+setInterval(()=>{if(LOADED){buildView();requestRender()}},60000);
+
+/* ---------- actions ---------- */
+function findAny(id){for(const p of D.posts){if(p.id===id)return {o:p,parent:null,col:'posts'};for(const r of p.resp)if(r.id===id)return {o:r,parent:p,col:'responses'}}return null}
+function stopRecTimer(){clearInterval(S.rec.timer);S.rec.timer=null}
+function stopCompTimer(){clearInterval(S.comp.timer);S.comp.timer=null}
+function resetComp(){stopCompTimer();if(S.comp&&S.comp.recState==='rec')micAbort();S.comp={tag:'agree',mode:'voice',text:PREFIX.agree,recState:'idle',secs:0,audioUrl:null,blob:null,demo:false}}
+function newRec(topic){return {step:1,topic,spark:null,rescueQ:'',rescueA:null,secs:0,timer:null,text:'',draftId:null,status:'idle',mode:'real',err:null,audioUrl:null,blob:null}}
+function leaveRec(){stopRecTimer();if(S.rec.status==='rec'&&S.rec.mode==='real')micAbort();S.rec.status='idle';if(S.pr&&['rec','starting'].includes(S.pr.recState)){clearInterval(S.pr.timer);micAbort();S.pr.recState='idle'}}
+function startRecTimer(){S.rec.timer=setInterval(()=>{S.rec.secs++;const el=document.getElementById('recTime');if(el)el.textContent=mmss(S.rec.secs);if(S.rec.secs>=90){dev.querySelector('[data-a="recStop"]')?.click()}},1000)}
+function startCompTimer(){S.comp.timer=setInterval(()=>{S.comp.secs++;const el=document.getElementById('cTime');if(el)el.textContent='0:'+String(S.comp.secs).padStart(2,'0');if(S.comp.secs>=30)dev.querySelector('[data-a="cStop"]')?.click()},1000)}
+function pick(arr,not){const a=arr.filter(x=>x!==not);return a[Math.floor(Math.random()*a.length)]||arr[0]}
+function lookup(q){
+  if(DICT[q])return [q,DICT[q]];
+  const tries=[q.replace(/ies$/,'y'),q.replace(/es$/,''),q.replace(/s$/,''),q.replace(/ing$/,''),q.replace(/ing$/,'e'),q.replace(/ed$/,''),q.replace(/d$/,''),q.replace(/-/g,' '),q.replace(/ /g,'-'),q.replace(/ /g,'')];
+  for(const t of tries)if(t&&DICT[t])return [t,DICT[t]];
+  return null;
+}
+function addWords(list){list.forEach(w=>{if(w[1]&&!D.words.some(x=>x[0]===w[0]))D.words.push(w)})}
+async function guard(fn,okMsg){S.working=true;try{await fn();if(okMsg)toast(okMsg)}catch(e){console.warn(e);toast('没有成功：'+(e&&e.message?e.message:'请检查网络'))}finally{S.working=false;flushRender()}}
+
+dev.addEventListener('input',e=>{
+  const id=e.target.id;
+  if(id==='cText')S.comp.text=e.target.value;
+  else if(id==='recText')S.rec.text=e.target.value;
+  else if(id==='rq')S.rec.rescueQ=e.target.value;
+  else if(id==='propose')S.propose=e.target.value;
+  else if(id==='pin')S.pin=e.target.value;
+  else if(id==='jNick')S.join.nick=e.target.value;
+  else if(id==='jReal')S.join.real=e.target.value;
+  else if(id==='ntTitle')S.newT.title=e.target.value;
+  else if(id==='ntDesc')S.newT.desc=e.target.value;
+  else if(id==='ntSparks')S.newT.sparks=e.target.value;
+  else if(id==='ntDate')S.newT.date=e.target.value;
+});
+dev.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(e.target.id==='loginForm'){
+    if(S.pin.trim()===TEACHER_PIN){S.teacherOK=true;S.pin='';S.pinErr=false;render();toast('已登入教师后台')}
+    else{S.pinErr=true;S.pin='';render();document.getElementById('pin')?.focus()}
+  }else if(e.target.id==='joinForm'){
+    const nick=S.join.nick.trim(),real=S.join.real.trim();
+    if(!nick){S.join.err='请先取一个昵称';render();return}
+    if(D.students.some(u=>u.nick===nick)){S.join.err='这个昵称已经有人用了，换一个吧';render();return}
+    const me={id:newId('u'),nick,real:real||'（未填姓名）'};
+    document.activeElement?.blur();
+    guard(async()=>{await api.add('users',Object.assign({},me));ME=me;MYID=me.id;ls.set('kaimai_me',me);S.join=null;buildView();if(sess())S.screen='class';render()},`欢迎你，${nick}！`);
+  }
+});
+dev.addEventListener('change',e=>{if(e.target.name==='ntMode'){S.newT.mode=e.target.value;S._keep=true;render()}});
+dev.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='rq'){e.preventDefault();dev.querySelector('[data-a="rescue"]').click()}});
+
+dev.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const a=b.dataset.a;
+  switch(a){
+  case 'nav': leaveRec();resetComp();go(b.dataset.s);dev.querySelector('.scroll').scrollTop=0;break;
+  case 'openTopic': leaveRec();resetComp();S.spark=null;go('topic',{topic:b.dataset.t});dev.querySelector('.scroll').scrollTop=0;break;
+  case 'openPost': resetComp();go('post',{post:b.dataset.p});dev.querySelector('.scroll').scrollTop=0;break;
+  case 'play': togglePlay(b.dataset.play);break;
+  case 'sparkT': {const t=topicOf(S.topic);if(t){S.spark=pick(t.sparks||[''],S.spark);S._keep=true;render()}break}
+  case 'startRec': {
+    const live=D.topics.filter(t=>t.status==='live');if(!live.length){toast('目前没有开放的话题');break}
+    const t=b.dataset.t&&topicOf(b.dataset.t)?.status==='live'?b.dataset.t:(S.screen==='topic'&&topicOf(S.topic)?.status==='live'?S.topic:live[0].id);
+    leaveRec();resetComp();S.rec=newRec(t);go('rec');dev.querySelector('.scroll').scrollTop=0;break}
+  case 'recTopic': S.rec.topic=b.dataset.t;S.rec.spark=null;S._keep=true;render();break;
+  case 'sparkR': S.rec.spark=pick(topicOf(S.rec.topic)?.sparks||[''],S.rec.spark);S._keep=true;render();break;
+  case 'rescue': {
+    const q=S.rec.rescueQ.trim().toLowerCase().replace(/[.,!?;:"“”]/g,'').replace(/\s+/g,' ');if(!q)break;
+    const found=lookup(q);
+    if(found){S.rec.rescueA=`<span style="font-family:var(--f-mono)">${esc(found[0])}</span> → <b>${esc(found[1])}</b>`;addWords([found])}
+    else{const near=Object.keys(DICT).filter(k=>k.length>2&&(k.includes(q)||q.includes(k))).slice(0,4);
+      S.rec.rescueA=`词库里还没有“${esc(q)}”。`+(near.length?`相近的词：${near.map(k=>`<span style="font-family:var(--f-mono)">${esc(k)}</span> → ${esc(DICT[k])}`).join('；')}`:'试试换个说法，或者先用简单的中文描述它。');}
+    S._keep=true;render();break}
+  case 'recBack': leaveRec();if(S.rec.step>1){S.rec.step=1;S.rec.secs=0;S.rec.err=null;render()}else go('home');break;
+  case 'recGo': S.rec.step=2;S.rec.secs=0;S.rec.err=null;S.rec.status='idle';render();break;
+  case 'recStart': (async()=>{
+    S.rec.status='starting';S.rec.err=null;S.rec.secs=0;render();
+    try{await micStart('#recBars','#liveCap');S.rec.mode='real';S.rec.status='rec';startRecTimer();render()}
+    catch(err){S.rec.status='idle';S.rec.err=micErr(err);render()}
+  })();break;
+  case 'recDemo': S.rec.mode='demo';S.rec.err=null;S.rec.status='rec';S.rec.secs=0;startRecTimer();render();break;
+  case 'recStop': (async()=>{
+    stopRecTimer();
+    if(S.rec.mode==='real'){
+      S.rec.status='saving';render();
+      const res=await micStop();
+      S.rec.audioUrl=res?res.url:null;S.rec.blob=res?res.blob:null;S.rec.text=res?res.text:'';S.rec.stats=res?res.stats:null;
+    }else{S.rec.audioUrl=null;S.rec.blob=null;S.rec.text=DEMO[S.rec.topic]||DEMO.def}
+    S.rec.secs=Math.max(1,S.rec.secs);S.rec.status='idle';S.rec.step=3;render();dev.querySelector('.scroll').scrollTop=0;
+  })();break;
+  case 'reEcho': S._keep=true;render();break;
+  case 'reRec': S.rec.step=2;S.rec.secs=0;S.rec.status='idle';S.rec.err=null;S.rec.mode='real';S.rec.audioUrl=null;S.rec.blob=null;S.rec.stats=null;S.rec.text='';render();break;
+  case 'saveDraft': {
+    const id=S.rec.draftId||('d'+Date.now());S.rec.draftId=id;
+    const ex=D.drafts.find(d=>d.id===id);const rec={id,topic:S.rec.topic,text:S.rec.text,secs:S.rec.secs,audioUrl:S.rec.audioUrl,blob:S.rec.blob,stats:S.rec.stats,mode:S.rec.mode};
+    if(ex)Object.assign(ex,rec);else D.drafts.unshift(rec);
+    go('me');toast('已存草稿，只有你看得到');break}
+  case 'openDraft': {const d=D.drafts.find(x=>x.id===b.dataset.d);if(!d)break;S.rec=Object.assign(newRec(d.topic),{step:3,secs:d.secs,text:d.text,draftId:d.id,audioUrl:d.audioUrl,blob:d.blob,stats:d.stats,mode:d.mode||'real'});go('rec');break}
+  case 'publish': {
+    if(S.working)break;
+    const r=S.rec,txt=r.text.trim();
+    if(!txt&&!r.blob){toast('还没有录音，先说点什么吧');break}
+    if(!topicOf(r.topic)||topicOf(r.topic).status!=='live'){toast('这个话题已经关闭了');break}
+    if(txt)addWords(analyze(txt).words);
+    const dur=r.blob?Math.max(1,r.secs):Math.max(20,Math.min(90,r.secs||Math.round(txt.length*0.3)));
+    b.disabled=true;b.textContent='发布中……';
+    guard(async()=>{
+      const aud=await api.putAudio(r.blob);
+      const post=Object.assign({topic:r.topic,by:MYID,dur,pinned:false,hidden:false,reports:0,likes:0,text:txt},aud);
+      const fl=aiFlag(txt);if(fl)post.aiflag=fl;
+      const pid=await api.add('posts',post);
+      if(!CLOUD){setTimeout(()=>{const o=RAW.posts.find(p=>p.id===pid);if(!o||o.hidden)return;o.likes=(o.likes||0)+3;refresh();toast('有 3 位同学喜欢你的播客')},6000)}
+      if(r.draftId)D.drafts=D.drafts.filter(d=>d.id!==r.draftId);
+      S.working=false;go('topic',{topic:r.topic,spark:null});
+    },'已发布！同学现在听得到了');
+    break}
+  case 'cTag': {const old=S.comp.tag,k=b.dataset.k;S.comp.tag=k;
+    if(S.comp.text.startsWith(PREFIX[old]))S.comp.text=PREFIX[k]+S.comp.text.slice(PREFIX[old].length);else if(!S.comp.text.trim()&&S.comp.mode==='text')S.comp.text=PREFIX[k];
+    S._keep=true;render();break}
+  case 'cMode': {const m=b.dataset.m;if(m===S.comp.mode)break;const tag=S.comp.tag;resetComp();S.comp.tag=tag;S.comp.mode=m;S.comp.text=m==='text'?PREFIX[tag]:'';S._keep=true;render();break}
+  case 'cRedo': {const tag=S.comp.tag;resetComp();S.comp.tag=tag;S.comp.text='';S._keep=true;render();break}
+  case 'cRec': (async()=>{
+    S.comp.recState='starting';S.comp.secs=0;S._keep=true;render();
+    try{await micStart('#cBars',null);S.comp.demo=false;S.comp.recState='rec';startCompTimer();S._keep=true;render()}
+    catch(err){S.comp.demo=true;S.comp.recState='rec';startCompTimer();S._keep=true;render();toast(micErr(err)==='denied'?'麦克风权限被拒绝，改用示范录音':'这里不能用麦克风，改用示范录音')}
+  })();break;
+  case 'cStop': (async()=>{
+    stopCompTimer();
+    if(!S.comp.demo){S.comp.recState='saving';S._keep=true;render();const res=await micStop();S.comp.audioUrl=res?res.url:null;S.comp.blob=res?res.blob:null;S.comp.text=res?res.text:''}
+    else{const ex={agree:'这个说法让我想起我自己的经历。',differ:'换个角度看，其实还有别的可能。',ask:'你当时是怎么想的？'};S.comp.text=PREFIX[S.comp.tag]+ex[S.comp.tag]}
+    S.comp.secs=Math.max(1,S.comp.secs);S.comp.recState='done';S._keep=true;render();
+  })();break;
+  case 'cSend': {
+    if(S.working)break;
+    const c=S.comp;const txt=c.text.trim();
+    if(c.mode==='text'&&(!txt||txt===PREFIX[c.tag].trim())){toast('先把想说的话补完整');break}
+    if(c.mode==='voice'&&!c.blob&&!txt){toast('先录一段语音');break}
+    const postId=S.post;
+    b.disabled=true;b.textContent='送出中……';
+    guard(async()=>{
+      const aud=c.mode==='voice'?await api.putAudio(c.blob):{};
+      const resp=Object.assign({post:postId,by:MYID,tag:c.tag,mode:c.mode,text:txt,hidden:false,reports:0},aud);
+      if(c.mode==='voice')resp.dur=Math.max(1,c.secs);
+      const fl=aiFlag(txt);if(fl)resp.aiflag=fl;
+      await api.add('responses',resp);
+      resetComp();S.working=false;S._keep=true;render();
+    },'回应已送出');
+    break}
+  case 'like': {
+    const p=D.posts.find(x=>x.id===b.dataset.p);if(!p)break;
+    const on=!LIKED.has(p.id);if(on)LIKED.add(p.id);else LIKED.delete(p.id);ls.set('kaimai_liked',[...LIKED]);
+    document.querySelectorAll(`[data-a="like"][data-p="${p.id}"]`).forEach(x=>{x.outerHTML=likeCtl(p)});
+    if(on)document.querySelectorAll(`[data-a="like"][data-p="${p.id}"]`).forEach(x=>x.classList.add('pop'));
+    api.inc('posts',p.id,'likes',on?1:-1).catch(()=>toast('没有成功，请检查网络'));
+    break}
+  case 'report': {const f=findAny(b.dataset.r);if(!f)break;guard(()=>api.inc(f.col,f.o.id,'reports',1),'已检举，老师会查看');break}
+  case 'propose': {const t=S.propose.trim();if(!t){toast('先写下你想聊的问题');break}S.propose='';guard(()=>api.add('proposals',{by:MYID,title:t}),'提名已送给老师');break}
+  /* teacher */
+  case 'toStudent': S.view='student';S.pinErr=false;S.pin='';render();break;
+  case 'logout': S.proj=false;S.teacherOK=false;S.view='student';S.confirm=null;render();toast('已登出');break;
+  case 'tt': S.tt=b.dataset.k;S.confirm=null;render();break;
+  case 'filter': S.filter=b.dataset.k;S._keep=true;render();break;
+  case 'pin': {const f=findAny(b.dataset.id);if(!f)break;const v=!f.o.pinned;guard(()=>api.update(f.col,f.o.id,{pinned:v}),v?'已置顶，学生会看到“老师推荐”':'已取消置顶');break}
+  case 'hide': {const f=findAny(b.dataset.id);if(!f)break;const v=!f.o.hidden;guard(()=>api.update(f.col,f.o.id,{hidden:v}),v?'已隐藏，学生看不到了':'已恢复显示');break}
+  case 'clear': {const f=findAny(b.dataset.id);if(!f)break;guard(()=>api.update(f.col,f.o.id,{reports:0,aiflag:undefined}),'已标记为没问题');break}
+  case 'askDel': S.confirm=b.dataset.id;S._keep=true;render();break;
+  case 'cancelDel': S.confirm=null;S._keep=true;render();break;
+  case 'del': {const f=findAny(b.dataset.id);S.confirm=null;if(!f){render();break}guard(()=>api.remove(f.col,f.o.id),'已删除');break}
+  case 'tStatus': {const t=topicOf(b.dataset.t);if(!t)break;const v=b.dataset.v;
+    const fields=v==='live'?{status:'live',when:'刚刚上线',order:Date.now()}:{status:'arch',when:'已归档'};
+    guard(()=>api.update('topics',t.id,fields),v==='live'?'话题已上线，学生端首页看得到':'话题已归档');break}
+  case 'addTopic': {
+    const n=S.newT;if(!n.title.trim()){toast('先写下话题');break}
+    const sparks=n.sparks.split('\n').map(x=>x.trim()).filter(Boolean);
+    const now=n.mode==='now';
+    const t={title:n.title.trim(),desc:n.desc.trim()||'说说你的看法。',status:now?'live':'sched',order:now?Date.now():-Date.now(),
+      when:now?'本周 · 刚刚上线':'排定：'+n.date.replace(/^(\d+)-(\d+)-(\d+)$/,(m,y,mo,d)=>`${+mo}月${+d}日上线`),sparks:sparks.length?sparks:['想想一件和这个话题有关的小事。']};
+    S.newT={title:'',desc:'',sparks:'',mode:'now',date:'2026-10-26'};
+    guard(()=>api.add('topics',t),now?'已上线，成为学生端的本周话题':'已排定');render();break}
+  case 'adopt': {const p=D.proposals.find(x=>x.id===b.dataset.p);if(!p)break;S.newT.title=p.title;S.newT.desc='这个话题由'+(stu(p.by).nick)+'提名。';
+    guard(()=>api.remove('proposals',p.id),'已填进“新增话题”，确认后上线');render();break}
+  case 'decline': guard(()=>api.remove('proposals',b.dataset.p),'已婉拒');break;
+  case 'askReset': S.confirm='__reset';S._keep=true;render();break;
+  case 'doReset': S.confirm=null;guard(()=>api.reset(),'已还原示范数据');break;
+  }
+});
+
+document.getElementById('vStudent').onclick=()=>{S.view='student';S.confirm=null;render()};
+document.getElementById('vTeacher').onclick=()=>{leaveRec();resetComp();S.view='teacher';S.pinErr=false;render();document.getElementById('pin')?.focus()};
+try{speechSynthesis.getVoices()}catch(e){}
+render();
+startCloud();
+})();
+</script>
+
+</body>
+</html>
